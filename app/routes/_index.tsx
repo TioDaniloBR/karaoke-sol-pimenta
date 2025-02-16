@@ -1,7 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.png";
 import { useLoaderData } from "@remix-run/react";
-import { Song } from "../models/Song";
+import { loader as loaderArtists } from "./api.artistas.internacionais";
+import { useState } from "react";
+import { Checkbox } from "~/components/Checkbox";
+import { ArtistTile } from "~/components/ArtistTile";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,49 +14,45 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const songs: Song[] = [
-    {
-      code: "1",
-      title: "Aquarela",
-      artist: "Toquinho",
-      genre: "MPB",
-      lyrics: "Eu quis cantar minha canção...",
-    },
-    {
-      code: "2",
-      title: "Eu sei que vou te amar",
-      artist: "Tom Jobim",
-      genre: "MPB",
-      lyrics: "Eu sei que vou te amar...",
-    },
-    {
-      code: "3",
-      title: "Garota de Ipanema",
-      artist: "Tom Jobim",
-      genre: "MPB",
-      lyrics: "Olha que coisa mais linda...",
-    },
-  ];
+  const artists = await loaderArtists();
 
-  return {
-    songs,
-  };
+  // TODO: Filtrar artistas para não exibir todos
+  return artists;
 };
 
 export default function Index() {
-  const { songs } = useLoaderData<typeof loader>();
+  const { artists: artistsData } = useLoaderData<typeof loader>();
+  const [artists, setArtists] = useState(artistsData);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filter = event.target.value;
+
+    if (filter) {
+      const filteredArtists = artistsData.filter((artist) =>
+        artist.name.toLowerCase().includes(filter.toLowerCase())
+      );
+      setArtists(filteredArtists);
+    } else {
+      setArtists(artistsData);
+    }
+  };
 
   return (
     <div className="">
       <img src={logo} alt="Sol e Pimenta Lounge Bar" />
-      <h1>Catálogo de músicas</h1>
-      <p>Seja bem-vindo ao catálogo de músicas do Sol e Pimenta Lounge Bar.</p>
+      <div className="flex">
+        <div>
+          <Checkbox label="Nacionais" />
+          <Checkbox label="Internacionais" />
+        </div>
+        <div>
+          <label htmlFor="filter">Localizar</label>
+          <input name="filter" id="filter" onChange={handleChange} />
+        </div>
+      </div>
       <ul>
-        {songs.map((song) => (
-          <li key={song.code}>
-            <h2>{song.title}</h2>
-            <p>{song.artist}</p>
-          </li>
+        {artists.map((artist) => (
+          <ArtistTile key={artist.name} artist={artist} />
         ))}
       </ul>
     </div>
