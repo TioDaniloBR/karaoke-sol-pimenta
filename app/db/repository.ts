@@ -3,8 +3,9 @@ import nationalArtists from "./artists-national.json";
 import internationalSongs from "./songs-internationals.json";
 import internationalArtists from "./artists-international.json";
 import { Artist } from "~/models/Artist";
+import { Country } from "~/models/Country";
 
-export const getArtists = () => {
+export const fetchArtists = () => {
   const national: Artist[] = nationalArtists.map((artist) => ({
     ...artist,
     country: "Nacional",
@@ -20,8 +21,22 @@ export const getArtists = () => {
   });
 };
 
+export const fetchSongs = () => {
+  const nationals = nationalSongs.map((song) => ({
+    ...song,
+    country: "Nacional" as Country,
+  }));
+  const internationals = internationalSongs.map((song) => ({
+    ...song,
+    country: "Internacional" as Country,
+  }));
+
+  return [...nationals, ...internationals];
+};
+
+// TODO: going to delete this soon enough
 export const getArtist = (artistName: string) => {
-  const artist = getArtists().find((artist) => artist.name === artistName);
+  const artist = fetchArtists().find((artist) => artist.name === artistName);
   if (!artist) {
     return null;
   }

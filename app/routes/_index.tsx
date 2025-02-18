@@ -1,10 +1,12 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.png";
-import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/Checkbox";
 import { ArtistTile } from "~/components/ArtistTile";
-import { getArtists } from "~/db/repository";
+import { fetchArtists, fetchSongs } from "~/db/repository";
+import { getArtists, storeArtists, storeSongs } from "~/indexedDb/db";
+import { Artist } from "~/models/Artist";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,29 +15,27 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
-  const artists = getArtists();
-
-  // TODO: Filtrar artistas para não exibir todos
-  return artists;
-};
+// export const loader = async () => {
+//   const artists = fetchArtists();
+//   const songs = fetchSongs();
+//
+//   // TODO: Filtrar artistas para não exibir todos
+//   return { artists, songs };
+// };
 
 export default function Index() {
-  const artistsData = useLoaderData<typeof loader>();
-  const [artists, setArtists] = useState(artistsData);
+  // const { artists: artistsData, songs } = useLoaderData<typeof loader>();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const filter = event.target.value;
+  // useEffect(() => {
+  //   storeArtists(artistsData);
+  //   storeSongs(songs);
+  // }, [artistsData, songs]);
 
-    if (filter) {
-      const filteredArtists = artistsData.filter((artist) =>
-        artist.name.toLowerCase().includes(filter.toLowerCase())
-      );
-      setArtists(filteredArtists);
-    } else {
-      setArtists(artistsData);
-    }
-  };
+  const [artists, setArtists] = useState<Artist[]>([]);
+
+  useEffect(() => {
+    getArtists("Nacional", 0).then(setArtists);
+  }, []);
 
   return (
     <div className="w-4/5 mx-auto max-w-xl">
@@ -47,12 +47,14 @@ export default function Index() {
         </div>
         <div>
           <label htmlFor="filter">Localizar</label>
-          <input name="filter" id="filter" onChange={handleChange} />
+          <input name="filter" id="filter" />
         </div>
       </div>
       <ul className="grid md:grid-cols-2 gap-4">
         {artists.map((artist) => (
-          <ArtistTile key={artist.name} artist={artist} />
+          <Link to={`/artist/${artist.name}`} key={artist.name}>
+            <ArtistTile artist={artist} />
+          </Link>
         ))}
       </ul>
     </div>

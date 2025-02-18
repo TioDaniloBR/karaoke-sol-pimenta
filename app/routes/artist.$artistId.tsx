@@ -1,29 +1,33 @@
-import { useLoaderData } from "@remix-run/react";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { useNavigate, useParams } from "@remix-run/react";
 import { SongTile } from "~/components/SongTile";
 import { ArtistTile } from "~/components/ArtistTile";
-import { getArtist } from "~/db/repository";
+import { getArtist } from "~/indexedDb/db";
+import { useEffect, useState } from "react";
+import { Artist } from "~/models/Artist";
+import { Song } from "~/models/Song";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const artistName = String(params.artistId);
-  const artist = getArtist(artistName);
+type ArtistWithSongs = (Artist & { songs: Song[] }) | null;
+
+export default function ArtistPage() {
+  const navigate = useNavigate();
+  const { artistId } = useParams();
+  const [artist, setArtist] = useState<ArtistWithSongs>(null);
+
+  useEffect(() => {
+    getArtist(String(artistId)).then(setArtist);
+  }, [artistId]);
 
   if (!artist) {
-    throw new Error("Artist not found");
+    return <div>Carregando...</div>;
   }
-
-  return artist;
-};
-
-export default function Artistas() {
-  const { songs, ...artist } = useLoaderData<typeof loader>();
 
   return (
     <div>
+      <button onClick={() => navigate(-1)}>Back</button>
       <ArtistTile artist={artist} variant="medium" />
 
       <ul className="grid gap-4">
-        {songs.map((song) => (
+        {artist.songs.map((song) => (
           <SongTile key={song.code} song={song} />
         ))}
       </ul>
