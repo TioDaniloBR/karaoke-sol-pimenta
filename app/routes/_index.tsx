@@ -1,10 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.png";
 import { useLoaderData } from "@remix-run/react";
-import { loader as loaderArtists } from "./api.artistas.internacionais";
 import { useState } from "react";
 import { Checkbox } from "~/components/Checkbox";
 import { ArtistTile } from "~/components/ArtistTile";
+import { getArtists } from "~/db/repository";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,14 +14,14 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const artists = await loaderArtists();
+  const artists = getArtists();
 
   // TODO: Filtrar artistas para não exibir todos
   return artists;
 };
 
 export default function Index() {
-  const { artists: artistsData } = useLoaderData<typeof loader>();
+  const artistsData = useLoaderData<typeof loader>();
   const [artists, setArtists] = useState(artistsData);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,10 +6,10 @@ type Variant = "small" | "medium";
 
 type Props = {
   artist: Artist;
-  variant: Variant;
+  variant?: Variant;
 };
 
-export const ArtistTile = ({ artist }: Props) => {
+export const ArtistTile = ({ artist, variant = "small" }: Props) => {
   return (
     <li key={artist.name}>
       <Link

@@ -1,27 +1,22 @@
 import { useLoaderData } from "@remix-run/react";
-import internacionais from "../db/internacionais.json";
-import internationalArtists from "../db/internationalArtists.json";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { SongTile } from "~/components/SongTile";
 import { ArtistTile } from "~/components/ArtistTile";
-import { Artist } from "~/models/Artist";
+import { getArtist } from "~/db/repository";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const songs = internacionais.filter(
-    (song) => song.artist.toLowerCase() === params.artistId?.toLowerCase()
-  );
+  const artistName = String(params.artistId);
+  const artist = getArtist(artistName);
 
-  const artist = internationalArtists.find(
-    (artist) => artist.name === params.artistId
-  ) as unknown as Artist;
+  if (!artist) {
+    throw new Error("Artist not found");
+  }
 
-  return { songs, artist };
+  return artist;
 };
 
 export default function Artistas() {
-  const { artist, songs } = useLoaderData<typeof loader>();
-  console.log(artist);
-  console.log(songs);
+  const { songs, ...artist } = useLoaderData<typeof loader>();
 
   return (
     <div>
