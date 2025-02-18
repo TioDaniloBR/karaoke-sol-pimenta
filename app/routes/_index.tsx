@@ -38,7 +38,7 @@ export default function Index() {
   };
 
   return (
-    <div className="">
+    <div className="w-4/5 mx-auto max-w-xl">
       <img src={logo} alt="Sol e Pimenta Lounge Bar" />
       <div className="flex">
         <div>
@@ -50,7 +50,7 @@ export default function Index() {
           <input name="filter" id="filter" onChange={handleChange} />
         </div>
       </div>
-      <ul>
+      <ul className="grid md:grid-cols-2 gap-4">
         {artists.map((artist) => (
           <ArtistTile key={artist.name} artist={artist} />
         ))}
