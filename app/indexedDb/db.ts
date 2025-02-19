@@ -21,20 +21,12 @@ export const storeArtists = async (artists: Artist[]) => {
   await db.artists.bulkPut(artists);
 };
 
-export const getArtists = async (
-  country: Country,
-  skip: number,
-  limit = 50
-) => {
-  const result = await db.artists
-    .where("country")
-    .equals(country)
-    .offset(skip)
-    .limit(limit)
-    .toArray();
+export const getArtists = async (country?: Country) => {
+  if (country) {
+    return db.artists.where("country").equals(country).toArray();
+  }
 
-  // console.log(result);
-  return result;
+  return db.artists.toArray();
 };
 
 export const getArtist = async (artistName: string) => {
