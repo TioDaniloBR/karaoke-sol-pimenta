@@ -21,6 +21,20 @@ export const storeArtists = async (artists: Artist[]) => {
   await db.artists.bulkPut(artists);
 };
 
+export const fetchAndStoreData = async () => {
+  const [hasSongs, hasArtists] = await Promise.all([
+    db.songs.count(),
+    db.artists.count(),
+  ]);
+
+  if (hasSongs && hasArtists) return;
+
+  const response = await fetch("/api/data");
+  const data = await response.json();
+
+  await Promise.all([storeSongs(data.songs), storeArtists(data.artists)]);
+};
+
 export const getArtists = async (country?: Country) => {
   if (country) {
     return db.artists.where("country").equals(country).toArray();

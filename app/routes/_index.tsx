@@ -4,8 +4,7 @@ import { Link } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/Checkbox";
 import { ArtistTile } from "~/components/ArtistTile";
-import { fetchArtists, fetchSongs } from "~/db/repository";
-import { getArtists, storeArtists, storeSongs } from "~/indexedDb/db";
+import { fetchAndStoreData, getArtists } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -19,16 +18,14 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  // useEffect(() => {
-  //   storeArtists(artistsData);
-  //   storeSongs(songs);
-  // }, [artistsData, songs]);
-
   const [artists, setArtists] = useState<Artist[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());
-
   useEffect(() => {
-    getArtists().then(setArtists);
+    fetchAndStoreData()
+      .then(() => getArtists())
+      .then(setArtists)
+      .finally(() => setLoading(false));
   }, []);
 
   const Row = ({ style, rowIndex, columnIndex }: GridChildComponentProps) => {
@@ -88,20 +85,24 @@ export default function Index() {
           <input name="filter" id="filter" />
         </div>
       </div>
-      <AutoSizer disableWidth>
-        {({ height }) => (
-          <FixedSizeGrid
-            columnCount={columnCount}
-            columnWidth={288}
-            height={height}
-            width={width}
-            rowCount={artists.length}
-            rowHeight={100}
-          >
-            {Row}
-          </FixedSizeGrid>
-        )}
-      </AutoSizer>
+      {loading ? (
+        <div>Carregando...</div>
+      ) : (
+        <AutoSizer disableWidth>
+          {({ height }) => (
+            <FixedSizeGrid
+              columnCount={columnCount}
+              columnWidth={288}
+              height={height}
+              width={width}
+              rowCount={artists.length}
+              rowHeight={100}
+            >
+              {Row}
+            </FixedSizeGrid>
+          )}
+        </AutoSizer>
+      )}{" "}
     </div>
   );
 }
