@@ -1,14 +1,11 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.png";
-import { Link } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/Checkbox";
-import { ArtistTile } from "~/components/ArtistTile";
 import { fetchAndStoreData, getArtists } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
-import { FixedSizeGrid, GridChildComponentProps } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { Country } from "~/models/Country";
+import { ArtistList } from "~/components/ArtistList";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,25 +23,6 @@ export default function Index() {
       .then(() => getArtists())
       .then(setArtists)
       .finally(() => setLoading(false));
-  }, []);
-
-  const Row = ({ style, rowIndex, columnIndex }: GridChildComponentProps) => {
-    const artist = artists[rowIndex * 2 + columnIndex];
-    return (
-      <div style={style}>
-        <Link to={`/artist/${artist.name}`} key={artist.name}>
-          <ArtistTile artist={artist} />
-        </Link>
-      </div>
-    );
-  };
-
-  const [columnCount, setColumnCount] = useState(300);
-  const [width, setWidth] = useState(300);
-
-  useEffect(() => {
-    setColumnCount(window.innerWidth > 768 ? 2 : 1);
-    setWidth(window.innerWidth > 768 ? 600 : 304);
   }, []);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,24 +63,7 @@ export default function Index() {
           <input name="filter" id="filter" />
         </div>
       </div>
-      {loading ? (
-        <div>Carregando...</div>
-      ) : (
-        <AutoSizer disableWidth>
-          {({ height }) => (
-            <FixedSizeGrid
-              columnCount={columnCount}
-              columnWidth={288}
-              height={height}
-              width={width}
-              rowCount={artists.length}
-              rowHeight={100}
-            >
-              {Row}
-            </FixedSizeGrid>
-          )}
-        </AutoSizer>
-      )}{" "}
+      <ArtistList loading={loading} artists={artists} />
     </div>
   );
 }
