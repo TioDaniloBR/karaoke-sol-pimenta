@@ -12,7 +12,7 @@ export function SongTile({ song }: Props) {
       </span>
       <div>
         <h2>{song.title}</h2>
-        <p>{song.lyrics}</p>
+        <p>{song.lyricsSnippet}...</p>
       </div>
     </li>
   );
