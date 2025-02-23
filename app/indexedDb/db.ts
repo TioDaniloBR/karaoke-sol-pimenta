@@ -4,26 +4,35 @@ import { Country } from "~/models/Country";
 import { ArtistResult, SongResult } from "~/models/SearchResult";
 import { Song } from "~/models/Song";
 import { v4 as uuid } from "uuid";
+import { ArtistWithSongs } from "~/models/ArtistWithSongs";
+
+export type DBSong = Song & {
+  artistId: string;
+};
 
 class DB {
   #db: Dexie & {
-    songs: EntityTable<Song, "code">;
-    artists: EntityTable<Artist, "name">;
+    songs: EntityTable<DBSong, "code">;
+    artists: EntityTable<Artist, "id">;
   };
 
   constructor() {
     this.#db = new Dexie("karaokeDB") as Dexie & {
-      songs: EntityTable<Song, "code">;
-      artists: EntityTable<Artist, "name">;
+      songs: EntityTable<DBSong, "code">;
+      artists: EntityTable<Artist, "id">;
     };
     this.#db.version(1).stores({
-      songs: "title, artist, country",
-      artists: "name, country",
+      songs: "code, artistId, title, country",
+      artists: "id, name, country",
     });
   }
 
-  #storeSongs = async (songs: Song[]) => {
-    await this.#db.songs.bulkPut(songs);
+  #storeSongs = async (songs: DBSong[]) => {
+    const songsToStore = songs.map((song) => ({
+      ...song,
+    }));
+    console.log(songsToStore);
+    await this.#db.songs.bulkPut(songsToStore);
   };
 
   #storeArtists = async (artists: Artist[]) => {
@@ -39,12 +48,9 @@ class DB {
     if (hasSongs && hasArtists) return;
 
     const response = await fetch("/api/data");
-    const data = await response.json();
-
-    await Promise.all([
-      this.#storeSongs(data.songs),
-      this.#storeArtists(data.artists),
-    ]);
+    const data: { songs: DBSong[]; artists: Artist[] } = await response.json();
+    await this.#storeArtists(data.artists);
+    await this.#storeSongs(data.songs);
   };
 
   getArtists = async (country?: Country) => {
@@ -55,16 +61,18 @@ class DB {
     return this.#db.artists.toArray();
   };
 
-  getArtist = async (artistName: string) => {
-    const artist = await this.#db.artists.get(artistName);
+  getArtist = async (artistId: string): Promise<ArtistWithSongs | null> => {
+    const artist = await this.#db.artists.get(artistId);
     if (!artist) {
       return null;
     }
 
     const songs = await this.#db.songs
-      .where("artist")
-      .equals(artistName)
+      .where("artistId")
+      .equals(artistId)
       .toArray();
+
+    console.log("songs", songs);
 
     return {
       ...artist,
@@ -92,12 +100,12 @@ class DB {
       .anyOfIgnoreCase(search)
       .toArray();
 
-    const id = uuid();
     const results: SongResult[] = songs.map((song) => ({
       ...song,
-      id,
+      id: uuid(),
       kind: "song",
     }));
+    console.log(results);
     return results;
   };
 }

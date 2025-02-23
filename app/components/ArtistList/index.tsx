@@ -27,7 +27,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
     const artist = artists[rowIndex * 2 + columnIndex];
     return (
       <div style={style}>
-        <Link to={`/artist/${artist.name}`} key={artist.name}>
+        <Link to={`/artist/${artist.id}`} key={artist.id}>
           <ArtistTile artist={artist} />
         </Link>
       </div>

@@ -3,15 +3,12 @@ import { SongTile } from "~/components/SongTile";
 import { ArtistTile } from "~/components/ArtistTile";
 import { db } from "~/indexedDb/db";
 import { useEffect, useState } from "react";
-import { Artist } from "~/models/Artist";
-import { Song } from "~/models/Song";
-
-type ArtistWithSongs = (Artist & { songs: Song[] }) | null;
+import { ArtistWithSongs } from "~/models/ArtistWithSongs";
 
 export default function ArtistPage() {
   const navigate = useNavigate();
   const { artistId } = useParams();
-  const [artist, setArtist] = useState<ArtistWithSongs>(null);
+  const [artist, setArtist] = useState<ArtistWithSongs | null>(null);
 
   useEffect(() => {
     db.getArtist(String(artistId)).then(setArtist);

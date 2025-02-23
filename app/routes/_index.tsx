@@ -5,6 +5,7 @@ import { Country } from "~/models/Country";
 import { ArtistList } from "~/components/ArtistList";
 import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
+import { useSongSearch } from "~/hooks/useSongsSearch";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,16 +15,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { loading, artists, filters, handleCountryFilter } = useArtists();
   const {
-    loading,
-    artists,
-    filters,
-    handleCountryFilter,
     handleSearch,
+    loading: searchLoading,
     search,
-    debouncedSearch,
     results,
-  } = useArtists();
+  } = useSongSearch();
 
   return (
     <div className="mx-auto max-w-xl">
@@ -53,8 +51,8 @@ export default function Index() {
           />
         </div>
       </div>
-      {debouncedSearch ? (
-        <ResultList loading={loading} results={results} />
+      {search ? (
+        <ResultList loading={searchLoading} results={results} />
       ) : (
         <ArtistList loading={loading} artists={artists} />
       )}

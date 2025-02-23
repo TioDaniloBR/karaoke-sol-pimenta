@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import { db } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
-import { useDebounce } from "./useDebounce";
-import { SearchResult } from "~/models/SearchResult";
 
 export const useArtists = () => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
     db.fetchAndStoreData()
@@ -40,24 +36,10 @@ export const useArtists = () => {
     search: "",
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
-
-  const artistsResult = debouncedSearch ? [] : [];
-  const songsResult = debouncedSearch ? [] : [];
-
-  const results: SearchResult[] = [];
-
   return {
     artists,
     loading,
     filters,
     handleCountryFilter,
-    handleSearch,
-    search,
-    debouncedSearch,
-    searchResult: [].concat(artistsResult, songsResult),
-    results,
   };
 };
