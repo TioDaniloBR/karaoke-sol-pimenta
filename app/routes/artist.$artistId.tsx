@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "@remix-run/react";
 import { SongTile } from "~/components/SongTile";
 import { ArtistTile } from "~/components/ArtistTile";
-import { getArtist } from "~/indexedDb/db";
+import { db } from "~/indexedDb/db";
 import { useEffect, useState } from "react";
 import { Artist } from "~/models/Artist";
 import { Song } from "~/models/Song";
@@ -14,7 +14,7 @@ export default function ArtistPage() {
   const [artist, setArtist] = useState<ArtistWithSongs>(null);
 
   useEffect(() => {
-    getArtist(String(artistId)).then(setArtist);
+    db.getArtist(String(artistId)).then(setArtist);
   }, [artistId]);
 
   if (!artist) {

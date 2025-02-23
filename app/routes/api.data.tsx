@@ -1,42 +1,43 @@
-import nationalSongs from "../db/songs-nationals.json";
-import nationalArtists from "../db/artists-national.json";
-import internationalSongs from "../db/songs-internationals.json";
-import internationalArtists from "../db/artists-international.json";
+import jsonSongs from "../db/songs.json";
 import { Artist } from "~/models/Artist";
-import { Country } from "~/models/Country";
+import { Song } from "~/models/Song";
+import { Country, countrySchema } from "~/models/Country";
+import { z } from "zod";
 
-const fetchArtists = () => {
-  const national: Artist[] = nationalArtists.map((artist) => ({
-    ...artist,
-    country: "Nacional",
-  }));
+const ApiSongSchema = z.array(
+  z.object({
+    code: z.string().or(z.number()),
+    title: z.string().or(z.number()),
+    artistName: z.string().or(z.number()),
+    lyricsSnippet: z.string(),
+    image_url: z.string().nullable(),
+    country: countrySchema,
+  })
+);
 
-  const international: Artist[] = internationalArtists.map((artist) => ({
-    ...artist,
-    country: "Internacional",
-  }));
+export const loader = (): { songs: Song[]; artists: Artist[] } => {
+  const artists: Artist[] = [];
+  const apiSongs = ApiSongSchema.parse(jsonSongs);
+  const songs: Song[] = apiSongs.map((song) => {
+    const { artistName, image_url, code, ...dataSong } = song;
+    let artist = artists.find((a) => a.name === artistName);
+    if (!artist) {
+      const newArtist = {
+        name: String(artistName),
+        image_url: image_url,
+        country: song.country,
+      };
+      artists.push(newArtist);
+      artist = newArtist;
+    }
 
-  return [...national, ...international].sort((a, b) => {
-    return a.name.localeCompare(b.name);
+    return {
+      ...dataSong,
+      code: String(code),
+      title: String(song.title),
+      artist: artist,
+    };
   });
-};
-
-const fetchSongs = () => {
-  const nationals = nationalSongs.map((song) => ({
-    ...song,
-    country: "Nacional" as Country,
-  }));
-  const internationals = internationalSongs.map((song) => ({
-    ...song,
-    country: "Internacional" as Country,
-  }));
-
-  return [...nationals, ...internationals];
-};
-
-export const loader = () => {
-  const songs = fetchSongs();
-  const artists = fetchArtists();
 
   return { songs, artists };
 };

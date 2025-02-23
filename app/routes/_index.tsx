@@ -1,11 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.png";
-import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/Checkbox";
-import { fetchAndStoreData, getArtists } from "~/indexedDb/db";
-import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
 import { ArtistList } from "~/components/ArtistList";
+import { useArtists } from "~/hooks/useArtists";
+import { ResultList } from "~/components/ResultsList";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,30 +14,16 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const [artists, setArtists] = useState<Artist[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState(new Set<Country>());
-  useEffect(() => {
-    fetchAndStoreData()
-      .then(() => getArtists())
-      .then(setArtists)
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked, name } = event.target;
-    const newFilter = new Set(filter);
-    if (checked) {
-      newFilter.add(name as Country);
-    } else {
-      newFilter.delete(name as Country);
-    }
-
-    const country =
-      newFilter.size === 1 ? Array.from(newFilter.values())[0] : undefined;
-    getArtists(country).then(setArtists);
-    setFilter(newFilter);
-  };
+  const {
+    loading,
+    artists,
+    filters,
+    handleCountryFilter,
+    handleSearch,
+    search,
+    debouncedSearch,
+    results,
+  } = useArtists();
 
   return (
     <div className="mx-auto max-w-xl">
@@ -48,22 +33,31 @@ export default function Index() {
           <Checkbox
             label="Nacionais"
             name={"Nacional" as Country}
-            checked={filter.has("Nacional")}
-            onChange={handleFilterChange}
+            checked={filters.national}
+            onChange={handleCountryFilter}
           />
           <Checkbox
             label="Internacionais"
             name={"Internacional" as Country}
-            checked={filter.has("Internacional")}
-            onChange={handleFilterChange}
+            checked={filters.international}
+            onChange={handleCountryFilter}
           />
         </div>
         <div>
           <label htmlFor="filter">Localizar</label>
-          <input name="filter" id="filter" />
+          <input
+            name="filter"
+            id="filter"
+            onChange={handleSearch}
+            value={search}
+          />
         </div>
       </div>
-      <ArtistList loading={loading} artists={artists} />
+      {debouncedSearch ? (
+        <ResultList loading={loading} results={results} />
+      ) : (
+        <ArtistList loading={loading} artists={artists} />
+      )}
     </div>
   );
 }
