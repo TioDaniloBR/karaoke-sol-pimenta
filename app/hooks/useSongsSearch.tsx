@@ -14,13 +14,12 @@ export const useSongSearch = () => {
     if (debouncedSearch) {
       db.getArtistsBySearch(debouncedSearch)
         .then(setResults)
-        .then(() => db.getSongsBySearch(debouncedSearch))
-        .then(setResults)
         .finally(() => setLoading(false));
     }
   }, [debouncedSearch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
     setSearch(event.target.value);
   };
 

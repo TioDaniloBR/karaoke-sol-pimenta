@@ -1,12 +1,6 @@
 import { isArtistResult, SearchResult } from "~/models/SearchResult";
-import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
 import { SongTile } from "../SongTile";
-
-type Props = {
-  loading: boolean;
-  results: SearchResult[];
-};
 
 const Tile = ({ result }: { result: SearchResult }) => {
   if (isArtistResult(result)) {
@@ -16,7 +10,16 @@ const Tile = ({ result }: { result: SearchResult }) => {
   return <div>{<SongTile song={result} />}</div>;
 };
 
-export const ResultList = ({ results }: Props) => {
+type Props = {
+  loading: boolean;
+  results: SearchResult[];
+};
+
+export const ResultList = ({ results, loading }: Props) => {
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
   return (
     <div>
       <ul>

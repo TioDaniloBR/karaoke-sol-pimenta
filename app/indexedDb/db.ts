@@ -23,7 +23,7 @@ class DB {
     };
     this.#db.version(1).stores({
       songs: "code, artistId, title, country",
-      artists: "id, name, country",
+      artists: "name, country",
     });
   }
 
@@ -31,7 +31,6 @@ class DB {
     const songsToStore = songs.map((song) => ({
       ...song,
     }));
-    console.log(songsToStore);
     await this.#db.songs.bulkPut(songsToStore);
   };
 
@@ -72,8 +71,6 @@ class DB {
       .equals(artistId)
       .toArray();
 
-    console.log("songs", songs);
-
     return {
       ...artist,
       songs,
@@ -82,8 +79,9 @@ class DB {
 
   getArtistsBySearch = async (search: string): Promise<ArtistResult[]> => {
     const artists = await this.#db.artists
-      .where(["name"])
-      .anyOfIgnoreCase(search)
+      .filter((artist) =>
+        artist.name.toLowerCase().includes(search.toLowerCase())
+      )
       .toArray();
 
     const results: ArtistResult[] = artists.map((artist) => ({
@@ -91,12 +89,13 @@ class DB {
       id: uuid(),
       kind: "artist",
     }));
+    console.log("artists", results);
     return results;
   };
 
   getSongsBySearch = async (search: string): Promise<SongResult[]> => {
     const songs = await this.#db.songs
-      .where(["title"])
+      .where("title")
       .anyOfIgnoreCase(search)
       .toArray();
 
@@ -105,7 +104,6 @@ class DB {
       id: uuid(),
       kind: "song",
     }));
-    console.log(results);
     return results;
   };
 }
