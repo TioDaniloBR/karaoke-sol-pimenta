@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
 import { Link } from "@remix-run/react";
