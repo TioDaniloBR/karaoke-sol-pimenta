@@ -1,6 +1,7 @@
 import { Artist } from "../../models/Artist";
 import albumNotFound from "../../images/album-not-found.svg";
 import { Link } from "@remix-run/react";
+import { cn } from "~/utils";
 
 type Variant = "small" | "medium";
 
@@ -10,14 +11,23 @@ type Props = {
 };
 
 export const ArtistTile = ({ artist, variant = "small" }: Props) => {
+  const imageVariants = {
+    small: "w-16 h-16",
+    medium: "w-28 h-28",
+  };
+  const textVariants = {
+    small: "text-sm",
+    medium: "text-2xl",
+  };
+
   return (
-    <li key={artist.name} className="w-full flex gap-2 max-w-72 items-center">
+    <div key={artist.name} className={cn("flex gap-6 items-center")}>
       <img
-        className="rounded-full w-16 h-16 object-cover"
+        className={cn("rounded-full object-cover", imageVariants[variant])}
         src={artist.image_url || albumNotFound}
         alt={artist.name}
       />
-      <h2>{artist.name}</h2>
-    </li>
+      <h2 className={cn("", textVariants[variant])}>{artist.name}</h2>
+    </div>
   );
 };

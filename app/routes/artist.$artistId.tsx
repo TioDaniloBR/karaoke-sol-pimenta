@@ -4,6 +4,7 @@ import { ArtistTile } from "~/components/ArtistTile";
 import { db } from "~/indexedDb/db";
 import { useEffect, useState } from "react";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
+import backIcon from "~/images/back.png";
 
 export default function ArtistPage() {
   const navigate = useNavigate();
@@ -19,15 +20,23 @@ export default function ArtistPage() {
   }
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)}>Back</button>
-      <ArtistTile artist={artist} variant="medium" />
+    <main className="mx-auto p-6 max-w-3xl">
+      <section className="flex justify-between mb-8 items-center">
+        <ArtistTile artist={artist} variant="medium" />
+        <button onClick={() => navigate(-1)}>
+          <img
+            src={backIcon}
+            alt="Voltar para a página anterior"
+            className="w-20"
+          />
+        </button>
+      </section>
 
-      <ul className="grid gap-4">
+      <ul className="grid gap-4 border border-primary rounded-2xl shadow-blurred p-4">
         {artist.songs.map((song) => (
           <SongTile key={song.code} song={song} />
         ))}
       </ul>
-    </div>
+    </main>
   );
 }

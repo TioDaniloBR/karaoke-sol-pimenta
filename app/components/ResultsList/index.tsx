@@ -1,10 +1,15 @@
 import { isArtistResult, SearchResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
 import { SongTile } from "../SongTile";
+import { Link } from "@remix-run/react";
 
 const Tile = ({ result }: { result: SearchResult }) => {
   if (isArtistResult(result)) {
-    return <ArtistTile artist={result} />;
+    return (
+      <Link to={`artist/${result.name}`}>
+        <ArtistTile artist={result} />
+      </Link>
+    );
   }
 
   return <div>{<SongTile song={result} />}</div>;

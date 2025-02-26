@@ -21,6 +21,9 @@ export default {
         primary: "#FFFF15",
         secondary: "#00FFFF",
       },
+      boxShadow: {
+        blurred: "0px 0px 2px 2px rgba(255,255,21,0.75)",
+      },
     },
   },
   plugins: [],
