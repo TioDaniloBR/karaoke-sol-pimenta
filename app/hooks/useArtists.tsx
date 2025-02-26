@@ -15,7 +15,12 @@ export const useArtists = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleCountryFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCountryFilter = (
+    event: React.FormEventHandler<HTMLButtonElement> | undefined
+  ) => {
+    if (!event) {
+      return;
+    }
     const { checked, name } = event.target;
     const newFilter = new Set(filter);
     if (checked) {

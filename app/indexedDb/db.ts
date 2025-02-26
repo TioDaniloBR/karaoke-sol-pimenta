@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from "dexie";
 import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
-import { ArtistResult, SongResult } from "~/models/SearchResult";
+import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 import { Song } from "~/models/Song";
 import { v4 as uuid } from "uuid";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
@@ -77,33 +77,30 @@ class DB {
     };
   };
 
-  getArtistsBySearch = async (search: string): Promise<ArtistResult[]> => {
+  getResults = async (search: string): Promise<SearchResult[]> => {
     const artists = await this.#db.artists
       .filter((artist) =>
         artist.name.toLowerCase().includes(search.toLowerCase())
       )
       .toArray();
 
-    const results: ArtistResult[] = artists.map((artist) => ({
+    const songs = await this.#db.songs
+      .filter((song) => song.title.toLowerCase().includes(search.toLowerCase()))
+      .toArray();
+
+    const artistResults: ArtistResult[] = artists.map((artist) => ({
       ...artist,
       id: uuid(),
       kind: "artist",
     }));
-    console.log("artists", results);
-    return results;
-  };
 
-  getSongsBySearch = async (search: string): Promise<SongResult[]> => {
-    const songs = await this.#db.songs
-      .where("title")
-      .anyOfIgnoreCase(search)
-      .toArray();
-
-    const results: SongResult[] = songs.map((song) => ({
+    const songResults: SongResult[] = songs.map((song) => ({
       ...song,
       id: uuid(),
       kind: "song",
     }));
+
+    const results = [...artistResults, ...songResults];
     return results;
   };
 }

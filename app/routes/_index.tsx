@@ -1,11 +1,12 @@
 import type { MetaFunction } from "@remix-run/node";
-import logo from "../images/logo.png";
+import logo from "../images/logo.svg";
 import { Checkbox } from "~/components/Checkbox";
 import { Country } from "~/models/Country";
 import { ArtistList } from "~/components/ArtistList";
 import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
 import { useSongSearch } from "~/hooks/useSongsSearch";
+import SearchIcon from "../images/search.png";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,30 +27,35 @@ export default function Index() {
   return (
     <div className="mx-auto max-w-xl">
       <img src={logo} alt="Sol e Pimenta Lounge Bar" />
-      <div className="flex">
-        <div>
-          <Checkbox
-            label="Nacionais"
-            name={"Nacional" as Country}
-            checked={filters.national}
-            onChange={handleCountryFilter}
-          />
-          <Checkbox
-            label="Internacionais"
-            name={"Internacional" as Country}
-            checked={filters.international}
-            onChange={handleCountryFilter}
-          />
-        </div>
-        <div>
-          <label htmlFor="filter">Localizar</label>
-          <input
-            name="filter"
-            id="filter"
-            onChange={handleSearch}
-            value={search}
-          />
-        </div>
+      <div className="grid grid-cols-2 border-secondary rounded-3xl border-2 px-6 py-4 justify-between gap-1 mb-4">
+        <Checkbox
+          label="Nacionais"
+          name={"Nacional" as Country}
+          checked={filters.national}
+          onChange={handleCountryFilter}
+          className="col-start-1"
+        />
+        <Checkbox
+          label="Internacionais"
+          name={"Internacional" as Country}
+          checked={filters.international}
+          onChange={handleCountryFilter}
+          className="col-start-1"
+        />
+        <label
+          htmlFor="filter"
+          className="flex gap-2 items-center col-start-2 row-start-1"
+        >
+          <img className="w-7 h-7" src={SearchIcon} alt="Search" />
+          Localizar
+        </label>
+        <input
+          name="filter"
+          id="filter"
+          className="border-primary border-2 rounded-3xl px-4 col-start-2 h-7"
+          onChange={handleSearch}
+          value={search}
+        />
       </div>
       {search ? (
         <ResultList loading={searchLoading} results={results} />

@@ -12,7 +12,7 @@ export const useSongSearch = () => {
 
   useEffect(() => {
     if (debouncedSearch) {
-      db.getArtistsBySearch(debouncedSearch)
+      db.getResults(debouncedSearch)
         .then(setResults)
         .finally(() => setLoading(false));
     }
