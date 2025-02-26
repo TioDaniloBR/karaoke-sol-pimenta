@@ -10,3 +10,24 @@ body {
     color-scheme: dark;
   }
 }
+
+@layer utilities {
+  .scrollbar {
+    scrollbar-width: thin;
+    /* scrollbar-color: #ffff15 #00ffff; */
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: #ffff15;
+    border-radius: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #00ffff;
+    border-radius: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #00cccc;
+  }
+}
