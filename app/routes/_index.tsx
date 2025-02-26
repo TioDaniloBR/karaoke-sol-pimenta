@@ -26,20 +26,22 @@ export default function Index() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <img src={logo} alt="Sol e Pimenta Lounge Bar" />
+      <img
+        src={logo}
+        className="w-1/2 mx-auto"
+        alt="Sol e Pimenta Lounge Bar"
+      />
       <div className="grid grid-cols-2 border-secondary rounded-3xl border-2 px-6 py-4 justify-between gap-1 mb-4">
         <Checkbox
           label="Nacionais"
-          name={"Nacional" as Country}
           checked={filters.national}
-          onChange={handleCountryFilter}
+          onCheckedChange={handleCountryFilter("Nacional")}
           className="col-start-1"
         />
         <Checkbox
           label="Internacionais"
-          name={"Internacional" as Country}
           checked={filters.international}
-          onChange={handleCountryFilter}
+          onCheckedChange={handleCountryFilter("Internacional")}
           className="col-start-1"
         />
         <label

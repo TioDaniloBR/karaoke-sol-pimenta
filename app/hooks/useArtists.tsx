@@ -1,3 +1,4 @@
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { useEffect, useState } from "react";
 import { db } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
@@ -15,24 +16,20 @@ export const useArtists = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleCountryFilter = (
-    event: React.FormEventHandler<HTMLButtonElement> | undefined
-  ) => {
-    if (!event) {
-      return;
-    }
-    const { checked, name } = event.target;
-    const newFilter = new Set(filter);
-    if (checked) {
-      newFilter.add(name as Country);
-    } else {
-      newFilter.delete(name as Country);
-    }
+  const handleCountryFilter = (countryName: Country) => {
+    return (checked: CheckedState) => {
+      const newFilter = new Set(filter);
+      if (checked) {
+        newFilter.add(countryName);
+      } else {
+        newFilter.delete(countryName);
+      }
 
-    const country =
-      newFilter.size === 1 ? Array.from(newFilter.values())[0] : undefined;
-    db.getArtists(country).then(setArtists);
-    setFilter(newFilter);
+      const country =
+        newFilter.size === 1 ? Array.from(newFilter.values())[0] : undefined;
+      db.getArtists(country).then(setArtists);
+      setFilter(newFilter);
+    };
   };
 
   const filters = {
