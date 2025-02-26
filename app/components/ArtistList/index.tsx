@@ -38,7 +38,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
           </li>
         ))}
       </ul>
-      <ul className="grid grid-cols-2 gap-4 overflow-x-auto">
+      <ul className="grid md:grid-cols-2 gap-4 border border-primary rounded-2xl p-4 shadow-blurred">
         {filteredArtists.map((artist) => (
           <li key={artist.id}>
             <Link to={`/artist/${artist.id}`} key={artist.id}>

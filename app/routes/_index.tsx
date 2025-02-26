@@ -1,7 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.svg";
 import { Checkbox } from "~/components/Checkbox";
-import { Country } from "~/models/Country";
 import { ArtistList } from "~/components/ArtistList";
 import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
@@ -25,13 +24,13 @@ export default function Index() {
   } = useSongSearch();
 
   return (
-    <div className="mx-auto max-w-xl">
+    <main className="mx-auto max-w-xl p-4">
       <img
         src={logo}
         className="w-1/2 mx-auto"
         alt="Sol e Pimenta Lounge Bar"
       />
-      <div className="grid grid-cols-2 border-secondary rounded-3xl border-2 px-6 py-4 justify-between gap-1 mb-4">
+      <div className="grid md:grid-cols-2 border-secondary rounded-3xl border-2 px-6 py-4 justify-between gap-1 mb-4">
         <Checkbox
           label="Nacionais"
           checked={filters.national}
@@ -46,7 +45,7 @@ export default function Index() {
         />
         <label
           htmlFor="filter"
-          className="flex gap-2 items-center col-start-2 row-start-1"
+          className="flex gap-2 items-center md:col-start-2 md:row-start-1 mt-2 md:m-0"
         >
           <img className="w-7 h-7" src={SearchIcon} alt="Search" />
           Localizar
@@ -54,7 +53,7 @@ export default function Index() {
         <input
           name="filter"
           id="filter"
-          className="border-primary border-2 rounded-3xl px-4 col-start-2 h-7"
+          className="w-full border-primary border-2 rounded-3xl px-4 md:col-start-2 h-7"
           onChange={handleSearch}
           value={search}
         />
@@ -64,6 +63,6 @@ export default function Index() {
       ) : (
         <ArtistList loading={loading} artists={artists} />
       )}
-    </div>
+    </main>
   );
 }
