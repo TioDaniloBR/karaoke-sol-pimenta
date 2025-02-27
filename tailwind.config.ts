@@ -23,7 +23,7 @@ export default {
         body: "rgb(3 7 18 / var(--tw-bg-opacity, 1))",
       },
       boxShadow: {
-        blurred: "0px 0px 2px 2px rgba(255,255,21,0.75)",
+        blurred: "0px 0px 5px 2px rgba(255,255,21,0.75)",
       },
     },
   },
