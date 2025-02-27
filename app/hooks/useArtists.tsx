@@ -18,11 +18,9 @@ export const useArtists = () => {
 
   const handleCountryFilter = (countryName: Country) => {
     return (checked: CheckedState) => {
-      const newFilter = new Set(filter);
+      const newFilter = new Set<Country>();
       if (checked) {
         newFilter.add(countryName);
-      } else {
-        newFilter.delete(countryName);
       }
 
       const country =
