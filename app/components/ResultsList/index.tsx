@@ -31,7 +31,7 @@ export const ResultList = ({ results, loading }: Props) => {
           ))}
         </ul>
         <SectionTitle>Músicas</SectionTitle>
-        <ul className="grid gap-2">
+        <ul className="grid gap-6">
           {songsResult.map((result) => (
             <li>
               <SongTile song={result} />
