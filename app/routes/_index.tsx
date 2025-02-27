@@ -9,7 +9,7 @@ import { useNavigationController } from "~/contexts/NavigationProvider";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Sol e Pimenta" },
+    { title: "Sol e Pimenta Lounge Bar" },
     { name: "description", content: "Bem vindos ao nosso bar!" },
   ];
 };
