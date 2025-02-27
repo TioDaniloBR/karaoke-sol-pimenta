@@ -1,9 +1,12 @@
-import { useState } from "react";
 import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
 import { Link } from "@remix-run/react";
 import { cn } from "~/utils";
 import { Container } from "../Container";
+import {
+  NavigationContextType,
+  useNavigationController,
+} from "~/contexts/NavigationProvider";
 
 type Props = {
   loading: boolean;
@@ -11,7 +14,8 @@ type Props = {
 };
 
 export const ArtistList = ({ loading, artists }: Props) => {
-  const [selectedLetter, setSelectedLetter] = useState<string>("#");
+  const { selectedLetter, setSelectedLetter } =
+    useNavigationController() as NavigationContextType;
 
   if (loading) {
     return <div>Carregando...</div>;
