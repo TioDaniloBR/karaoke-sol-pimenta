@@ -14,7 +14,8 @@ type Props = {} & React.ComponentProps<"div">;
 
 export const NavigationProvider = ({ children }: Props) => {
   const [selectedLetter, setSelectedLetter] = useState<string>("#");
-  const { handleSearch, searchLoading, search, results } = useSongSearch();
+  const { handleSearch, searchLoading, search, results, resetSearch } =
+    useSongSearch();
   const { loading, artists, filters, handleCountryFilter } = useArtists();
 
   return (
@@ -30,6 +31,7 @@ export const NavigationProvider = ({ children }: Props) => {
         artists,
         filters,
         handleCountryFilter,
+        resetSearch,
       }}
     >
       {children}

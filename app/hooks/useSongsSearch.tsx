@@ -8,6 +8,7 @@ export type UseSongSearchReturnType = {
   search: string;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchLoading: boolean;
+  resetSearch: () => void;
 };
 
 export const useSongSearch = (): UseSongSearchReturnType => {
@@ -30,10 +31,16 @@ export const useSongSearch = (): UseSongSearchReturnType => {
     setSearch(event.target.value);
   };
 
+  const resetSearch = () => {
+    setSearch("");
+    setResults(null);
+  };
+
   return {
     results,
     search,
     handleSearch,
     searchLoading: loading,
+    resetSearch,
   };
 };

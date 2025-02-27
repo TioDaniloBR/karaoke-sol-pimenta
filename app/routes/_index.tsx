@@ -2,7 +2,6 @@ import type { MetaFunction } from "@remix-run/node";
 import logo from "../images/logo.svg";
 import { Checkbox } from "~/components/Checkbox";
 import { ArtistList } from "~/components/ArtistList";
-import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
 import SearchIcon from "../images/search.png";
 import { Container } from "~/components/Container";
@@ -25,6 +24,7 @@ export default function Index() {
     artists,
     filters,
     handleCountryFilter,
+    resetSearch,
   } = useNavigationController();
 
   return (
@@ -54,13 +54,23 @@ export default function Index() {
           <img className="w-7 h-7" src={SearchIcon} alt="Search" />
           Localizar
         </label>
-        <input
-          name="filter"
-          id="filter"
-          className="w-full border-primary border-2 rounded-3xl px-4 md:col-start-2 h-7"
-          onChange={handleSearch}
-          value={search}
-        />
+        <div className="relative">
+          <input
+            name="filter"
+            id="filter"
+            className="w-full border-primary border-2 rounded-3xl px-4 md:col-start-2 h-7"
+            onChange={handleSearch}
+            value={search}
+          />
+          {search && (
+            <button
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 border rounded-full w-4 h-4 flex items-center justify-center"
+              onClick={resetSearch}
+            >
+              x
+            </button>
+          )}{" "}
+        </div>
       </Container>
       {search ? (
         <ResultList loading={searchLoading} results={results} />
