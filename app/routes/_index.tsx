@@ -7,6 +7,10 @@ import { ResultList } from "~/components/ResultsList";
 import { useSongSearch } from "~/hooks/useSongsSearch";
 import SearchIcon from "../images/search.png";
 import { Container } from "~/components/Container";
+import {
+  NavigationContextType,
+  useNavigationController,
+} from "~/contexts/NavigationProvider";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,12 +21,8 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const { loading, artists, filters, handleCountryFilter } = useArtists();
-  const {
-    handleSearch,
-    loading: searchLoading,
-    search,
-    results,
-  } = useSongSearch();
+  const { handleSearch, searchLoading, search, results } =
+    useNavigationController() as NavigationContextType;
 
   return (
     <main className="mx-auto max-w-xl p-4">
