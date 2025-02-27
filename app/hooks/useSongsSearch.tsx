@@ -8,10 +8,10 @@ export const useSongSearch = () => {
   const [loading, setLoading] = useState(true);
   const debouncedSearch = useDebounce(search, 500);
 
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<SearchResult | null>(null);
 
   useEffect(() => {
-    if (debouncedSearch) {
+    if (debouncedSearch.length > 1) {
       db.getResults(debouncedSearch)
         .then(setResults)
         .finally(() => setLoading(false));

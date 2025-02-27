@@ -77,7 +77,7 @@ class DB {
     };
   };
 
-  getResults = async (search: string): Promise<SearchResult[]> => {
+  getResults = async (search: string): Promise<SearchResult> => {
     const artists = await this.#db.artists
       .filter((artist) =>
         artist.name.toLowerCase().includes(search.toLowerCase())
@@ -100,7 +100,7 @@ class DB {
       kind: "song",
     }));
 
-    const results = [...artistResults, ...songResults];
+    const results = { artistsResult: artistResults, songsResult: songResults };
     return results;
   };
 }

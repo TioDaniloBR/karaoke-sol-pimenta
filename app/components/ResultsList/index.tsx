@@ -1,37 +1,44 @@
-import { isArtistResult, SearchResult } from "~/models/SearchResult";
+import { SearchResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
 import { SongTile } from "../SongTile";
 import { Link } from "@remix-run/react";
-
-const Tile = ({ result }: { result: SearchResult }) => {
-  if (isArtistResult(result)) {
-    return (
-      <Link to={`artist/${result.name}`}>
-        <ArtistTile artist={result} />
-      </Link>
-    );
-  }
-
-  return <div>{<SongTile song={result} />}</div>;
-};
+import { Container } from "../Container";
+import { SectionTitle } from "../SectionTitle";
 
 type Props = {
   loading: boolean;
-  results: SearchResult[];
+  results: SearchResult | null;
 };
 
 export const ResultList = ({ results, loading }: Props) => {
-  if (loading) {
+  if (loading || !results) {
     return <div>Carregando...</div>;
   }
 
+  const { songsResult, artistsResult } = results;
+
   return (
-    <div>
-      <ul>
-        {results.map((result) => (
-          <Tile key={result.id} result={result} />
-        ))}
-      </ul>
-    </div>
+    <section>
+      <Container>
+        <SectionTitle>Artistas</SectionTitle>
+        <ul className="grid gap-2">
+          {artistsResult.map((result) => (
+            <li>
+              <Link to={`/artist/${result.name}`}>
+                <ArtistTile artist={result} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <SectionTitle>Músicas</SectionTitle>
+        <ul className="grid gap-2">
+          {songsResult.map((result) => (
+            <li>
+              <SongTile song={result} />
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
   );
 };

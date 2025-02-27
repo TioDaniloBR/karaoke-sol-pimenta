@@ -5,6 +5,7 @@ import { db } from "~/indexedDb/db";
 import { useEffect, useState } from "react";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
 import backIcon from "~/images/back.png";
+import { Container } from "~/components/Container";
 
 export default function ArtistPage() {
   const navigate = useNavigate();
@@ -31,12 +32,13 @@ export default function ArtistPage() {
           />
         </button>
       </section>
-
-      <ul className="grid gap-4 border border-primary rounded-2xl shadow-blurred p-4">
-        {artist.songs.map((song) => (
-          <SongTile key={song.code} song={song} />
-        ))}
-      </ul>
+      <Container className="shadow-blurred">
+        <ul className="grid gap-4">
+          {artist.songs.map((song) => (
+            <SongTile key={song.code} song={song} />
+          ))}
+        </ul>
+      </Container>
     </main>
   );
 }

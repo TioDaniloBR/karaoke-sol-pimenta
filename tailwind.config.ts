@@ -6,7 +6,7 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          "Inter",
+          "Saira Extra Condensed",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",
@@ -20,6 +20,7 @@ export default {
       colors: {
         primary: "#FFFF15",
         secondary: "#00FFFF",
+        body: "rgb(3 7 18 / var(--tw-bg-opacity, 1))",
       },
       boxShadow: {
         blurred: "0px 0px 2px 2px rgba(255,255,21,0.75)",

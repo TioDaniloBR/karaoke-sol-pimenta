@@ -3,6 +3,7 @@ import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
 import { Link } from "@remix-run/react";
 import { cn } from "~/utils";
+import { Container } from "../Container";
 
 type Props = {
   loading: boolean;
@@ -38,15 +39,17 @@ export const ArtistList = ({ loading, artists }: Props) => {
           </li>
         ))}
       </ul>
-      <ul className="grid md:grid-cols-2 gap-4 border border-primary rounded-2xl p-4 shadow-blurred">
-        {filteredArtists.map((artist) => (
-          <li key={artist.id}>
-            <Link to={`/artist/${artist.id}`} key={artist.id}>
-              <ArtistTile artist={artist} />
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <Container className="shadow-blurred">
+        <ul className="grid md:grid-cols-2 gap-4">
+          {filteredArtists.map((artist) => (
+            <li key={artist.id}>
+              <Link to={`/artist/${artist.id}`} key={artist.id}>
+                <ArtistTile artist={artist} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Container>
     </>
   );
 };

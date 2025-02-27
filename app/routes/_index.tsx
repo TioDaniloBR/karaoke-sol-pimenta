@@ -6,6 +6,7 @@ import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
 import { useSongSearch } from "~/hooks/useSongsSearch";
 import SearchIcon from "../images/search.png";
+import { Container } from "~/components/Container";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,7 +31,7 @@ export default function Index() {
         className="w-1/2 mx-auto"
         alt="Sol e Pimenta Lounge Bar"
       />
-      <div className="grid md:grid-cols-2 border-secondary rounded-3xl border-2 px-6 py-4 justify-between gap-1 mb-4">
+      <Container className="grid md:grid-cols-2 justify-between gap-1 mb-4 border-secondary">
         <Checkbox
           label="Nacionais"
           checked={filters.national}
@@ -57,7 +58,7 @@ export default function Index() {
           onChange={handleSearch}
           value={search}
         />
-      </div>
+      </Container>
       {search ? (
         <ResultList loading={searchLoading} results={results} />
       ) : (
