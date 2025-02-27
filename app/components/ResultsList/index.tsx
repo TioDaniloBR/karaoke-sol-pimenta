@@ -1,6 +1,6 @@
 import { SearchResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
-import { SongTile } from "../SongTile";
+import { ResultSongTile } from "../ResultSongTile";
 import { Link } from "@remix-run/react";
 import { Container } from "../Container";
 import { SectionTitle } from "../SectionTitle";
@@ -34,7 +34,7 @@ export const ResultList = ({ results, loading }: Props) => {
         <ul className="grid gap-6">
           {songsResult.map((result) => (
             <li>
-              <SongTile song={result} />
+              <ResultSongTile song={result} />
             </li>
           ))}
         </ul>
