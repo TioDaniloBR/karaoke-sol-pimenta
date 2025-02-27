@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useSongSearch } from "~/hooks/useSongsSearch";
 import { SearchResult } from "~/models/SearchResult";
 
-export type NavigationContextType = {
+type NavigationContextType = {
   selectedLetter: string;
   setSelectedLetter: (l: string) => void;
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -36,5 +36,12 @@ export const NavigationProvider = ({ children }: Props) => {
 };
 
 export const useNavigationController = () => {
-  return useContext(NavigationContext);
+  const context = useContext(NavigationContext);
+  if (!context) {
+    throw new Error(
+      "useNavigationController must be used within a NavigationProvider"
+    );
+  }
+
+  return context;
 };

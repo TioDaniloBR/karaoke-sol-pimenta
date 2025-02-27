@@ -4,7 +4,6 @@ import { Checkbox } from "~/components/Checkbox";
 import { ArtistList } from "~/components/ArtistList";
 import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
-import { useSongSearch } from "~/hooks/useSongsSearch";
 import SearchIcon from "../images/search.png";
 import { Container } from "~/components/Container";
 import {
@@ -22,7 +21,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const { loading, artists, filters, handleCountryFilter } = useArtists();
   const { handleSearch, searchLoading, search, results } =
-    useNavigationController() as NavigationContextType;
+    useNavigationController();
 
   return (
     <main className="mx-auto max-w-xl p-4">
