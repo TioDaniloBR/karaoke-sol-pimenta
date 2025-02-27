@@ -4,7 +4,20 @@ import { db } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
 
-export const useArtists = () => {
+export type UseArtistsReturnType = {
+  artists: Artist[];
+  loading: boolean;
+  filters: {
+    national: boolean;
+    international: boolean;
+    search: string;
+  };
+  handleCountryFilter: (
+    countryName: Country
+  ) => (checked: CheckedState) => void;
+};
+
+export const useArtists = (): UseArtistsReturnType => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());

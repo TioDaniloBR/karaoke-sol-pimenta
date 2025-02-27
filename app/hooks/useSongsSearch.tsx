@@ -3,7 +3,14 @@ import { useDebounce } from "./useDebounce";
 import { SearchResult } from "~/models/SearchResult";
 import { db } from "~/indexedDb/db";
 
-export const useSongSearch = () => {
+export type UseSongSearchReturnType = {
+  results: SearchResult | null;
+  search: string;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  searchLoading: boolean;
+};
+
+export const useSongSearch = (): UseSongSearchReturnType => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const debouncedSearch = useDebounce(search, 500);
@@ -27,6 +34,6 @@ export const useSongSearch = () => {
     results,
     search,
     handleSearch,
-    loading,
+    searchLoading: loading,
   };
 };

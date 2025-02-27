@@ -6,10 +6,7 @@ import { useArtists } from "~/hooks/useArtists";
 import { ResultList } from "~/components/ResultsList";
 import SearchIcon from "../images/search.png";
 import { Container } from "~/components/Container";
-import {
-  NavigationContextType,
-  useNavigationController,
-} from "~/contexts/NavigationProvider";
+import { useNavigationController } from "~/contexts/NavigationProvider";
 
 export const meta: MetaFunction = () => {
   return [
@@ -19,9 +16,16 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { loading, artists, filters, handleCountryFilter } = useArtists();
-  const { handleSearch, searchLoading, search, results } =
-    useNavigationController();
+  const {
+    handleSearch,
+    searchLoading,
+    search,
+    results,
+    loading,
+    artists,
+    filters,
+    handleCountryFilter,
+  } = useNavigationController();
 
   return (
     <main className="mx-auto max-w-xl p-4">
