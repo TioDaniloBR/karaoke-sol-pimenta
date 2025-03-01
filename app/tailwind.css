@@ -1,33 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
+@theme {
+  --font-sans:
+    Saira Extra Condensed, ui-sans-serif, system-ui, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
+  --color-primary: #ffff15;
+  --color-secondary: #00ffff;
+  --color-body: rgb(3 7 18 / var(--tw-bg-opacity, 1));
+
+  --shadow-blurred: 0px 0px 5px 2px rgba(255, 255, 21, 0.75);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
 }
 
-@layer utilities {
-  .scrollbar {
-    scrollbar-width: thin;
-    /* scrollbar-color: #ffff15 #00ffff; */
-  }
+@utility scrollbar {
+  scrollbar-width: thin;
+  /* scrollbar-color: #ffff15 #00ffff; */
 
-  .scrollbar::-webkit-scrollbar-track {
+  &::-webkit-scrollbar-track {
     background: #ffff15;
     border-radius: 10px;
   }
 
-  .scrollbar::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     background: #00ffff;
     border-radius: 10px;
   }
 
-  .scrollbar::-webkit-scrollbar-thumb:hover {
+  &::-webkit-scrollbar-thumb:hover {
     background: #00cccc;
+  }
+}
+
+@layer utilities {
+  html,
+  body {
+    @apply bg-white dark:bg-gray-950;
+
+    @media (prefers-color-scheme: dark) {
+      color-scheme: dark;
+    }
   }
 }
