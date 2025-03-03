@@ -11,6 +11,19 @@ export const meta: MetaFunction = () => {
   return [
     { title: "Sol e Pimenta Lounge Bar" },
     { name: "description", content: "Bem vindos ao nosso bar!" },
+    { property: "og:title", content: "Sol e Pimenta Lounge Bar" },
+    { property: "og:description", content: "Bem vindos ao nosso bar!" },
+    {
+      property: "og:image",
+      content: "https://karaoke-sol-pimenta.vercel.app/logo-og.png",
+    },
+    {
+      property: "og:url",
+      content: "https://karaoke-sol-pimenta.vercel.app/",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
   ];
 };
 
