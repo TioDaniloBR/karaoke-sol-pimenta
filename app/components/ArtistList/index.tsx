@@ -27,7 +27,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
   });
   return (
     <>
-      <ul className="flex gap-3 mb-5 overflow-x-auto p-4 scrollbar">
+      <ul className="flex gap-3 mb-5 overflow-x-auto p-4 scrollbar sticky top-0 bg-body">
         {letters.map((letter) => (
           <li key={letter}>
             <button
