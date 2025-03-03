@@ -41,7 +41,7 @@ export default function Index() {
   } = useNavigationController();
 
   return (
-    <main className="mx-auto max-w-xl p-4">
+    <main className="mx-auto max-w-xl p-4 mb-26">
       <img
         src={logo}
         className="w-1/2 mx-auto"

@@ -22,7 +22,7 @@ export default function ArtistPage() {
 
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <main className="mx-auto p-6 max-w-3xl">
+      <main className="mx-auto p-6 max-w-3xl mb-26">
         <section className="flex justify-between mb-8 items-center">
           <ArtistTile artist={artist} variant="medium" />
           <button onClick={() => navigate(-1)}>
