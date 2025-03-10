@@ -23,7 +23,7 @@ class DB {
     };
     this.#db.version(1).stores({
       songs: "code, artistId, title, country",
-      artists: "name, country",
+      artists: "id, name, country",
     });
   }
 
@@ -62,6 +62,7 @@ class DB {
 
   getArtist = async (artistId: string): Promise<ArtistWithSongs | null> => {
     const artist = await this.#db.artists.get(artistId);
+    console.log("artist", artistId);
     if (!artist) {
       return null;
     }
@@ -71,6 +72,7 @@ class DB {
       .equals(artistId)
       .toArray();
 
+    console.log("songs", songs);
     return {
       ...artist,
       songs,
