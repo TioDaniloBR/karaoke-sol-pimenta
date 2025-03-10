@@ -44,7 +44,7 @@ export default function Index() {
     <main className="mx-auto max-w-xl p-4 mb-26">
       <img
         src={logo}
-        className="w-1/2 mx-auto"
+        className="w-1/3 mx-auto mb-2"
         alt="Sol e Pimenta Lounge Bar"
       />
       <Container className="grid md:grid-cols-2 justify-between gap-1 mb-4 border-secondary">
