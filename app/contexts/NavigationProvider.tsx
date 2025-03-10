@@ -1,12 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import { useArtists, UseArtistsReturnType } from "~/hooks/useArtists";
+import { usePlaylist, UsePlaylistReturnType } from "~/hooks/usePlaylist";
 import { useSongSearch, UseSongSearchReturnType } from "~/hooks/useSongsSearch";
 
 type NavigationContextType = {
   selectedLetter: string;
   setSelectedLetter: (l: string) => void;
 } & UseArtistsReturnType &
-  UseSongSearchReturnType;
+  UseSongSearchReturnType &
+  UsePlaylistReturnType;
 
 const NavigationContext = createContext<NavigationContextType | null>(null);
 
@@ -17,6 +19,7 @@ export const NavigationProvider = ({ children }: Props) => {
   const { handleSearch, searchLoading, search, results, resetSearch } =
     useSongSearch();
   const { loading, artists, filters, handleCountryFilter } = useArtists();
+  const { pin, unpin, playlist } = usePlaylist();
 
   return (
     <NavigationContext.Provider
@@ -32,6 +35,9 @@ export const NavigationProvider = ({ children }: Props) => {
         filters,
         handleCountryFilter,
         resetSearch,
+        pin,
+        unpin,
+        playlist,
       }}
     >
       {children}
