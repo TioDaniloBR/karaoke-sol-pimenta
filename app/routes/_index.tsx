@@ -1,5 +1,4 @@
 import type { MetaFunction } from "@remix-run/node";
-import logo from "../images/logo.png";
 import { Checkbox } from "~/components/Checkbox";
 import { ArtistList } from "~/components/ArtistList";
 import { ResultList } from "~/components/ResultsList";
@@ -46,11 +45,6 @@ export default function Index() {
 
   return (
     <main className="mx-auto max-w-xl p-4 mb-26">
-      <img
-        src={logo}
-        className="w-1/3 mx-auto mb-2"
-        alt="Sol e Pimenta Lounge Bar"
-      />
       <div className="sticky top-0 bg-body">
         <Container className="px-6 py-4 mb-4 border-secondary">
           <div className="flex justify-between mb-6">

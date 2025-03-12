@@ -1,10 +1,8 @@
 import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
-import { Link, useNavigate } from "@remix-run/react";
-import { cn } from "~/utils";
+import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { useNavigationController } from "~/contexts/NavigationProvider";
-import { db } from "~/indexedDb/db";
 
 type Props = {
   loading: boolean;

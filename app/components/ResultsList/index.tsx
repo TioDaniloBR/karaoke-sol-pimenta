@@ -1,7 +1,7 @@
 import { SearchResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
 import { ResultSongTile } from "../ResultSongTile";
-import { Link } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { SectionTitle } from "../SectionTitle";
 
@@ -11,6 +11,8 @@ type Props = {
 };
 
 export const ResultList = ({ results, loading }: Props) => {
+  const navigate = useNavigate();
+
   if (loading || !results) {
     return <div>Carregando...</div>;
   }
@@ -27,9 +29,10 @@ export const ResultList = ({ results, loading }: Props) => {
           <ul className="grid gap-2">
             {artistsResult.map((result) => (
               <li>
-                <Link to={`/artist/${result.name}`}>
-                  <ArtistTile artist={result} />
-                </Link>
+                <ArtistTile
+                  artist={result}
+                  onTileClick={() => navigate(`/artist/${result.name}`)}
+                />
               </li>
             ))}
           </ul>
