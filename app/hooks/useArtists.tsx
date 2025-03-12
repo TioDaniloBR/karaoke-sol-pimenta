@@ -15,6 +15,7 @@ export type UseArtistsReturnType = {
   handleCountryFilter: (
     countryName: Country
   ) => (checked: CheckedState) => void;
+  handlePin: (artist: Artist) => void;
 };
 
 export const useArtists = (): UseArtistsReturnType => {
@@ -43,6 +44,21 @@ export const useArtists = (): UseArtistsReturnType => {
     };
   };
 
+  const handlePin = async (artist: Artist) => {
+    const newArtists = artists.slice();
+    const existentArtist = newArtists.find((a) => a.id === artist.id);
+    if (!existentArtist) return;
+
+    if (artist.pinned) {
+      await db.unpinArtist(artist);
+    } else {
+      await db.pinArtist(artist);
+    }
+
+    existentArtist.pinned = !existentArtist.pinned;
+    setArtists(newArtists);
+  };
+
   const filters = {
     national: filter.has("Nacional"),
     international: filter.has("Internacional"),
@@ -54,5 +70,6 @@ export const useArtists = (): UseArtistsReturnType => {
     loading,
     filters,
     handleCountryFilter,
+    handlePin,
   };
 };

@@ -5,4 +5,5 @@ export type Artist = {
   image_url: string | null;
   country: Country;
   id: string;
+  pinned?: boolean;
 };

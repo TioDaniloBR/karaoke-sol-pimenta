@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from "react";
+import { db } from "~/indexedDb/db";
 import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 
 export type UsePlaylistReturnType = {
@@ -11,24 +12,27 @@ export const usePlaylist = (): UsePlaylistReturnType => {
   const [playlist, setPlaylist] = useState<SearchResult | null>(null);
 
   useLayoutEffect(() => {
-    if (!playlist) {
-      setPlaylist(
-        JSON.parse(window.localStorage.getItem("playlist") || "null")
-      );
-    }
+    const fetchPlaylist = async () => {
+      const playlist = await db.getPinnedResults();
+      setPlaylist(playlist);
+    };
 
-    window.localStorage.setItem("playlist", JSON.stringify(playlist));
-  }, [playlist]);
+    fetchPlaylist();
+  }, []);
 
-  const pin = (result: ArtistResult | SongResult) => {
+  const pin = async (result: ArtistResult | SongResult) => {
     const artistsResult = playlist?.artistsResult.slice() || [];
     const songsResult = playlist?.songsResult.slice() || [];
 
+    result.pinned = true;
+
     if (result.kind === "artist") {
+      await db.pinArtist(result);
       artistsResult.push(result);
     }
 
     if (result.kind === "song") {
+      await db.pinSong(result);
       songsResult.push(result);
     }
 

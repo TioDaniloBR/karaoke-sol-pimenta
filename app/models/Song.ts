@@ -8,4 +8,5 @@ export type Song = {
   genre?: string; // TODO: remove optionals
   lyricsSnippet: string;
   country: Country;
+  pinned?: boolean;
 };

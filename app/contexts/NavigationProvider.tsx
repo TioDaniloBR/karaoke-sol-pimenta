@@ -18,7 +18,8 @@ export const NavigationProvider = ({ children }: Props) => {
   const [selectedLetter, setSelectedLetter] = useState<string>("#");
   const { handleSearch, searchLoading, search, results, resetSearch } =
     useSongSearch();
-  const { loading, artists, filters, handleCountryFilter } = useArtists();
+  const { loading, artists, filters, handleCountryFilter, handlePin } =
+    useArtists();
   const { pin, unpin, playlist } = usePlaylist();
 
   return (
@@ -33,6 +34,7 @@ export const NavigationProvider = ({ children }: Props) => {
         loading,
         artists,
         filters,
+        handlePin,
         handleCountryFilter,
         resetSearch,
         pin,

@@ -23,7 +23,7 @@ class DB {
     };
     this.#db.version(1).stores({
       songs: "code, artistId, title, country",
-      artists: "id, name, country",
+      artists: "id, name, country, pinned",
     });
   }
 
@@ -72,7 +72,6 @@ class DB {
       .equals(artistId)
       .toArray();
 
-    console.log("songs", songs);
     return {
       ...artist,
       songs,
@@ -92,7 +91,6 @@ class DB {
 
     const artistResults: ArtistResult[] = artists.map((artist) => ({
       ...artist,
-      id: uuid(),
       kind: "artist",
     }));
 
@@ -104,6 +102,44 @@ class DB {
 
     const results = { artistsResult: artistResults, songsResult: songResults };
     return results;
+  };
+
+  pinArtist = async (artist: Artist) => {
+    await this.#db.artists.put({ ...artist, pinned: true });
+  };
+
+  unpinArtist = async (artist: Artist) => {
+    await this.#db.artists.put({ ...artist, pinned: false });
+  };
+
+  pinSong = async (song: Song) => {
+    await this.#db.songs.put({
+      ...song,
+      pinned: true,
+      artistId: song.artist.id,
+    });
+  };
+
+  unpinSong = async (song: Song) => {
+    await this.#db.songs.put({
+      ...song,
+      pinned: false,
+      artistId: song.artist.id,
+    });
+  };
+
+  getPinnedResults = async (): Promise<SearchResult> => {
+    const songs = await this.#db.songs
+      .filter((song) => Boolean(song.pinned))
+      .toArray();
+    const artists = await this.#db.artists
+      .filter((artist) => Boolean(artist.pinned))
+      .toArray();
+
+    return {
+      artistsResult: artists.map((artist) => ({ ...artist, kind: "artist" })),
+      songsResult: songs.map((song) => ({ ...song, kind: "song", id: uuid() })),
+    };
   };
 }
 
