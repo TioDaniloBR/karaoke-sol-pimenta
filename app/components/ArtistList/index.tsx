@@ -31,7 +31,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
         {letters.map((letter) => (
           <li key={letter}>
             <button
-              className={cn(letter === selectedLetter && "text-primary")}
+              className={cn(letter === selectedLetter && "text-red-500")}
               onClick={() => setSelectedLetter(letter)}
             >
               {letter}
