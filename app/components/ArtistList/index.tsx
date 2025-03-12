@@ -11,13 +11,11 @@ type Props = {
 };
 
 export const ArtistList = ({ loading, artists }: Props) => {
-  const { selectedLetter, setSelectedLetter } = useNavigationController();
+  const { selectedLetter } = useNavigationController();
 
   if (loading) {
     return <div>Carregando...</div>;
   }
-
-  const letters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   const filteredArtists = artists.filter((artist) => {
     if (selectedLetter === "#") {
@@ -27,18 +25,6 @@ export const ArtistList = ({ loading, artists }: Props) => {
   });
   return (
     <>
-      <ul className="flex gap-3 mb-5 overflow-x-auto p-4 scrollbar sticky top-0 bg-body -mx-4">
-        {letters.map((letter) => (
-          <li key={letter}>
-            <button
-              className={cn(letter === selectedLetter && "text-red-500")}
-              onClick={() => setSelectedLetter(letter)}
-            >
-              {letter}
-            </button>
-          </li>
-        ))}
-      </ul>
       <Container className="shadow-blurred">
         <ul className="grid md:grid-cols-2 gap-4">
           {filteredArtists.map((artist) => (
