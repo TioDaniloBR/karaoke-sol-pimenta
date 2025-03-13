@@ -43,16 +43,19 @@ export const ArtistTile = ({
 
   return (
     <div key={artist.name} className="flex justify-between w-">
-      <div className={cn("flex gap-6 items-center")} onClick={handleTileClick}>
+      <button
+        className={cn("flex gap-6 items-center flex-auto")}
+        onClick={handleTileClick}
+      >
         <img
           className={cn("rounded-full object-cover", imageVariants[variant])}
           src={artist.image_url || albumNotFound}
           alt={artist.name}
         />
         <h2 className={cn("", textVariants[variant])}>{artist.name}</h2>
-      </div>
+      </button>
       {variant === "small" && (
-        <button onClick={handlePinClick}>
+        <button onClick={handlePinClick} className="ml-2">
           <img src={heartIcon} alt={heartAlt} />
         </button>
       )}
