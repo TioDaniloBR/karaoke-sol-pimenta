@@ -77,15 +77,28 @@ class DB {
     };
   };
 
+  #removeDiacritics = (str: string) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  };
+
   getResults = async (search: string): Promise<SearchResult> => {
     const artists = await this.#db.artists
       .filter((artist) =>
-        artist.name.toLowerCase().includes(search.toLowerCase())
+        this.#removeDiacritics(artist.name).includes(
+          this.#removeDiacritics(search)
+        )
       )
       .toArray();
 
     const songs = await this.#db.songs
-      .filter((song) => song.title.toLowerCase().includes(search.toLowerCase()))
+      .filter((song) =>
+        this.#removeDiacritics(song.title).includes(
+          this.#removeDiacritics(search)
+        )
+      )
       .toArray();
 
     const artistResults: ArtistResult[] = artists.map((artist) => ({
