@@ -1,11 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { db } from "~/indexedDb/db";
-import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
+import { Artist } from "~/models/Artist";
+import { SearchResult } from "~/models/SearchResult";
+import { Song } from "~/models/Song";
 
 type UsePlaylistReturnType = {
   playlist: SearchResult | null;
   fetchPlaylist: () => void;
-  handlePin: (result: ArtistResult | SongResult) => void;
+  handleSongPin: (song: Song) => void;
+  handleArtistPin: (artist: Artist) => void;
 };
 
 const PlaylistContext = createContext<UsePlaylistReturnType | null>(null);
@@ -20,24 +23,23 @@ export const PlaylistProvider = ({ children }: Props) => {
     setPlaylist(playlist);
   };
 
-  const handlePin = async (result: ArtistResult | SongResult) => {
-    if (result.kind === "artist") {
-      await db.togglePinArtist(result);
-    }
+  const handleArtistPin = async (artist: Artist) => {
+    await db.togglePinArtist(artist);
+    fetchPlaylist();
+  };
 
-    if (result.kind === "song") {
-      await db.togglePinSong(result);
-    }
-
+  const handleSongPin = async (song: Song) => {
+    await db.togglePinSong(song);
     fetchPlaylist();
   };
 
   return (
     <PlaylistContext.Provider
       value={{
-        handlePin,
         playlist,
         fetchPlaylist,
+        handleSongPin,
+        handleArtistPin,
       }}
     >
       {children}

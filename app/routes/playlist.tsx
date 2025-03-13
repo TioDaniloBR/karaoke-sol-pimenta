@@ -4,7 +4,8 @@ import { ResultList } from "~/components/ResultsList";
 import { usePlaylist } from "~/contexts/PlaylistProvider";
 
 export default function Playlist() {
-  const { playlist, fetchPlaylist } = usePlaylist();
+  const { playlist, fetchPlaylist, handleSongPin, handleArtistPin } =
+    usePlaylist();
 
   useEffect(() => {
     fetchPlaylist();
@@ -15,7 +16,12 @@ export default function Playlist() {
       <Header />
       <main className="">
         <h1 className="text-lg mb-4">Favoritos</h1>
-        <ResultList results={playlist} loading={false} />
+        <ResultList
+          results={playlist}
+          loading={false}
+          onArtistPin={handleArtistPin}
+          onSongPin={handleSongPin}
+        />
       </main>
     </div>
   );
