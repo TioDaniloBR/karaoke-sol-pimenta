@@ -104,26 +104,15 @@ class DB {
     return results;
   };
 
-  pinArtist = async (artist: Artist) => {
-    await this.#db.artists.put({ ...artist, pinned: true });
+  togglePinArtist = async (artist: Artist) => {
+    artist.pinned = !artist.pinned;
+    await this.#db.artists.put(artist);
   };
 
-  unpinArtist = async (artist: Artist) => {
-    await this.#db.artists.put({ ...artist, pinned: false });
-  };
-
-  pinSong = async (song: Song) => {
+  togglePinSong = async (song: Song) => {
+    song.pinned = !song.pinned;
     await this.#db.songs.put({
       ...song,
-      pinned: true,
-      artistId: song.artist.id,
-    });
-  };
-
-  unpinSong = async (song: Song) => {
-    await this.#db.songs.put({
-      ...song,
-      pinned: false,
       artistId: song.artist.id,
     });
   };

@@ -56,13 +56,7 @@ export const ArtistsProvider = ({ children }: Props) => {
     const existentArtist = newArtists.find((a) => a.id === artist.id);
     if (!existentArtist) return;
 
-    if (artist.pinned) {
-      await db.unpinArtist(artist);
-    } else {
-      await db.pinArtist(artist);
-    }
-
-    existentArtist.pinned = !existentArtist.pinned;
+    await db.togglePinArtist(artist);
     setArtists(newArtists);
   };
 

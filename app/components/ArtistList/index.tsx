@@ -33,7 +33,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
               <ArtistTile
                 artist={artist}
                 onTileClick={() => navigate(`/artist/${artist.id}`)}
-                onPinClick={() => handlePin(artist)}
+                onPinClick={handlePin}
               />
             </li>
           ))}

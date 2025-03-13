@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { Header } from "~/components/Header";
 import { ResultList } from "~/components/ResultsList";
 import { usePlaylist } from "~/contexts/PlaylistProvider";
 
 export default function Playlist() {
-  const { playlist } = usePlaylist();
+  const { playlist, fetchPlaylist } = usePlaylist();
+
+  useEffect(() => {
+    fetchPlaylist();
+  }, []);
+
   return (
     <div className="px-5 pt-2">
       <Header />

@@ -6,14 +6,22 @@ import { useEffect, useState, Suspense } from "react";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
 import { Container } from "~/components/Container";
 import { Header } from "~/components/Header";
+import { Song } from "~/models/Song";
 
 export default function ArtistPage() {
   const { artistId } = useParams();
   const [artist, setArtist] = useState<ArtistWithSongs | null>(null);
 
+  const fetchArtist = () => db.getArtist(String(artistId)).then(setArtist);
+
   useEffect(() => {
-    db.getArtist(String(artistId)).then(setArtist);
-  }, [artistId]);
+    fetchArtist();
+  }, []);
+
+  const handlePin = async (song: Song) => {
+    await db.togglePinSong(song);
+    fetchArtist();
+  };
 
   if (!artist) {
     return <div>Carregando...</div>;
@@ -30,7 +38,12 @@ export default function ArtistPage() {
           <Container className="shadow-blurred">
             <ul className="grid gap-4">
               {artist.songs.map((song) => (
-                <SongTile key={song.code} song={song} />
+                <SongTile
+                  key={song.code}
+                  song={song}
+                  variant="artistList"
+                  onPin={handlePin}
+                />
               ))}
             </ul>
           </Container>

@@ -10,7 +10,7 @@ type Props = {
   artist: Artist;
   variant?: Variant;
   onTileClick?: (id: string) => void;
-  onPinClick?: () => void;
+  onPinClick?: (artist: Artist) => void;
 };
 
 export const ArtistTile = ({
@@ -38,7 +38,7 @@ export const ArtistTile = ({
   };
 
   const handlePinClick = () => {
-    if (onPinClick) onPinClick(artist.id);
+    if (onPinClick) onPinClick(artist);
   };
 
   return (

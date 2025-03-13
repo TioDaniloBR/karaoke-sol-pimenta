@@ -4,8 +4,8 @@ import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 
 type UsePlaylistReturnType = {
   playlist: SearchResult | null;
-  pin: (result: ArtistResult | SongResult) => void;
-  unpin: (result: ArtistResult | SongResult) => void;
+  fetchPlaylist: () => void;
+  handlePin: (result: ArtistResult | SongResult) => void;
 };
 
 const PlaylistContext = createContext<UsePlaylistReturnType | null>(null);
@@ -14,62 +14,30 @@ type Props = {} & React.ComponentProps<"div">;
 
 export const PlaylistProvider = ({ children }: Props) => {
   const [playlist, setPlaylist] = useState<SearchResult | null>(null);
+
   const fetchPlaylist = async () => {
     const playlist = await db.getPinnedResults();
     setPlaylist(playlist);
   };
 
-  useEffect(() => {
+  const handlePin = async (result: ArtistResult | SongResult) => {
+    if (result.kind === "artist") {
+      await db.togglePinArtist(result);
+    }
+
+    if (result.kind === "song") {
+      await db.togglePinSong(result);
+    }
+
     fetchPlaylist();
-  }, []);
-
-  const pin = async (result: ArtistResult | SongResult) => {
-    const artistsResult = playlist?.artistsResult.slice() || [];
-    const songsResult = playlist?.songsResult.slice() || [];
-
-    result.pinned = true;
-
-    if (result.kind === "artist") {
-      await db.pinArtist(result);
-      artistsResult.push(result);
-    }
-
-    if (result.kind === "song") {
-      await db.pinSong(result);
-      songsResult.push(result);
-    }
-
-    setPlaylist({
-      artistsResult,
-      songsResult,
-    });
-  };
-
-  const unpin = (result: ArtistResult | SongResult) => {
-    if (!playlist) return;
-    const newPlaylist = { ...playlist };
-
-    if (result.kind === "artist") {
-      newPlaylist.artistsResult = playlist?.artistsResult.filter(
-        (a) => a.id !== result.id
-      );
-    }
-
-    if (result.kind === "song") {
-      newPlaylist.songsResult = playlist?.songsResult.filter(
-        (a) => a.id !== result.id
-      );
-    }
-
-    setPlaylist(newPlaylist);
   };
 
   return (
     <PlaylistContext.Provider
       value={{
-        pin,
-        unpin,
+        handlePin,
         playlist,
+        fetchPlaylist,
       }}
     >
       {children}

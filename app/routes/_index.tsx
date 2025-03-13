@@ -43,6 +43,8 @@ export default function Index() {
     setSelectedLetter,
   } = useArtists();
 
+  const { handlePin } = useSongSearch();
+
   const {
     search,
     results,
@@ -117,7 +119,11 @@ export default function Index() {
           )}
         </div>
         {search ? (
-          <ResultList loading={searchLoading} results={results} />
+          <ResultList
+            loading={searchLoading}
+            results={results}
+            onPin={handlePin}
+          />
         ) : (
           <ArtistList loading={loading} artists={artists} />
         )}

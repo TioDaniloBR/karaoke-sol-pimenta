@@ -9,8 +9,7 @@ type UseSongSearchReturnType = {
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
   resetSearch: () => void;
-  handlePinSong: (songResult: SongResult) => void;
-  handlePinArtist: (result: ArtistResult | SongResult) => void;
+  handlePin: (result: ArtistResult | SongResult) => void;
 };
 
 const SongSearchContext = createContext<UseSongSearchReturnType | null>(null);
@@ -42,35 +41,16 @@ export const SongSearchProvider = ({ children }: Props) => {
     setResults(null);
   };
 
-  const handlePinSong = async (songResult: SongResult) => {
+  const handlePin = async (result: ArtistResult | SongResult) => {
     if (!results) return;
 
-    const song = results.songsResult.find((s) => s.id === songResult.id);
-    if (!song) return;
-
-    if (song.pinned) {
-      await db.unpinSong(song);
-    } else {
-      await db.pinSong(song);
+    if (result.kind === "artist") {
+      await db.togglePinArtist(result);
     }
 
-    song.pinned = !song.pinned;
-    setResults({ ...results });
-  };
-
-  const handlePinArtist = async (result: ArtistResult | SongResult) => {
-    if (!results) return;
-
-    const artist = results.artistsResult.find((a) => a.id === result.id);
-    if (!artist) return;
-
-    if (artist.pinned) {
-      await db.unpinArtist(artist);
-    } else {
-      await db.pinArtist(artist);
+    if (result.kind === "song") {
+      await db.togglePinSong(result);
     }
-
-    artist.pinned = !artist.pinned;
 
     setResults({ ...results });
   };
@@ -83,8 +63,7 @@ export const SongSearchProvider = ({ children }: Props) => {
         search,
         results,
         resetSearch,
-        handlePinSong,
-        handlePinArtist,
+        handlePin,
       }}
     >
       {children}

@@ -1,19 +1,18 @@
-import { SearchResult } from "~/models/SearchResult";
+import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
-import { ResultSongTile } from "../ResultSongTile";
+import { SongTile } from "../SongTile";
 import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { SectionTitle } from "../SectionTitle";
-import { useSongSearch } from "~/contexts/SongSearchProvider";
 
 type Props = {
   loading: boolean;
   results: SearchResult | null;
+  onPin: (result: ArtistResult | SongResult) => void;
 };
 
-export const ResultList = ({ results, loading }: Props) => {
+export const ResultList = ({ results, loading, onPin }: Props) => {
   const navigate = useNavigate();
-  const { handlePinSong, handlePinArtist } = useSongSearch();
 
   if (loading || !results) {
     return <div>Carregando...</div>;
@@ -34,7 +33,7 @@ export const ResultList = ({ results, loading }: Props) => {
                 <ArtistTile
                   artist={result}
                   onTileClick={() => navigate(`/artist/${result.id}`)}
-                  onPinClick={() => handlePinArtist(result)}
+                  onPinClick={() => onPin(result)}
                 />
               </li>
             ))}
@@ -42,9 +41,12 @@ export const ResultList = ({ results, loading }: Props) => {
           {songsResult.length > 0 && <SectionTitle>Músicas</SectionTitle>}
           <ul className="grid gap-6">
             {songsResult.map((result) => (
-              <li>
-                <ResultSongTile song={result} />
-              </li>
+              <SongTile
+                key={result.id}
+                song={result}
+                variant="result"
+                onPin={onPin}
+              />
             ))}
           </ul>
         </Container>
