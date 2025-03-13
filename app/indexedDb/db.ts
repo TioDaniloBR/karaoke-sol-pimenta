@@ -54,10 +54,10 @@ class DB {
 
   getArtists = async (country?: Country) => {
     if (country) {
-      return this.#db.artists.where("country").equals(country).toArray();
+      return this.#db.artists.where("country").equals(country).sortBy("name");
     }
 
-    return this.#db.artists.toArray();
+    return this.#db.artists.orderBy("name").toArray();
   };
 
   getArtist = async (artistId: string): Promise<ArtistWithSongs | null> => {
@@ -69,7 +69,7 @@ class DB {
     const songs = await this.#db.songs
       .where("artistId")
       .equals(artistId)
-      .toArray();
+      .sortBy("title");
 
     return {
       ...artist,
@@ -132,10 +132,10 @@ class DB {
   getPinnedResults = async (): Promise<SearchResult> => {
     const songs = await this.#db.songs
       .filter((song) => Boolean(song.pinned))
-      .toArray();
+      .sortBy("title");
     const artists = await this.#db.artists
       .filter((artist) => Boolean(artist.pinned))
-      .toArray();
+      .sortBy("name");
 
     return {
       artistsResult: artists.map((artist) => ({ ...artist, kind: "artist" })),
