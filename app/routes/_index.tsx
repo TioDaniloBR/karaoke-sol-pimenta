@@ -70,7 +70,7 @@ export default function Index() {
   };
 
   return (
-    <>
+    <div className="text-white">
       <header className="bg-body py-5 px-4 flex justify-center">
         <div>
           <img className="w-36" src={logo} alt="Sol e Pimenta Lounge Bar" />
@@ -144,6 +144,6 @@ export default function Index() {
           <ArtistList loading={loading} artists={artists} />
         )}
       </main>
-    </>
+    </div>
   );
 }

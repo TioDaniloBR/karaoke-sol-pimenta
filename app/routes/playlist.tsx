@@ -12,7 +12,7 @@ export default function Playlist() {
   }, []);
 
   return (
-    <div className="px-5 pt-2">
+    <div className="px-5 pt-2 text-white">
       <Header />
       <main className="">
         <h1 className="text-lg mb-4">Favoritos</h1>

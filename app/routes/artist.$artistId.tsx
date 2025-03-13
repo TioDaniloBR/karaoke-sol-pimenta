@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "@remix-run/react";
+import { useParams } from "@remix-run/react";
 import { SongTile } from "~/components/SongTile";
 import { ArtistTile } from "~/components/ArtistTile";
 import { db } from "~/indexedDb/db";
@@ -29,7 +29,7 @@ export default function ArtistPage() {
 
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <div className="px-5 pt-2">
+      <div className="px-5 pt-2 text-white">
         <Header />
         <main className="mx-auto max-w-md">
           <section className="flex justify-between mb-8 items-center">
