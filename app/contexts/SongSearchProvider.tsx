@@ -28,7 +28,7 @@ export const SongSearchProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (debouncedSearch.length > 1) {
-      db.getResults(debouncedSearch)
+      db.getResults(debouncedSearch.trim())
         .then(setResults)
         .finally(() => setLoading(false));
     }
