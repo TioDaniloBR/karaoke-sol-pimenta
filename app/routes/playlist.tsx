@@ -1,8 +1,8 @@
 import { ResultList } from "~/components/ResultsList";
-import { useNavigationController } from "~/contexts/NavigationProvider";
+import { usePlaylist } from "~/contexts/PlaylistProvider";
 
 export default function Playlist() {
-  const { playlist } = useNavigationController();
+  const { playlist } = usePlaylist();
   return (
     <main className="p-4">
       <h1>Playlist</h1>

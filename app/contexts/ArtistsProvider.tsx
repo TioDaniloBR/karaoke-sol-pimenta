@@ -1,10 +1,12 @@
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "~/indexedDb/db";
 import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
 
-export type UseArtistsReturnType = {
+type UseArtistsReturnType = {
+  selectedLetter: string;
+  setSelectedLetter: (letter: string) => void;
   artists: Artist[];
   loading: boolean;
   filters: {
@@ -18,7 +20,12 @@ export type UseArtistsReturnType = {
   handlePin: (artist: Artist) => void;
 };
 
-export const useArtists = (): UseArtistsReturnType => {
+const ArtistsContext = createContext<UseArtistsReturnType | null>(null);
+
+type Props = {} & React.ComponentProps<"div">;
+
+export const ArtistsProvider = ({ children }: Props) => {
+  const [selectedLetter, setSelectedLetter] = useState<string>("#");
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());
@@ -65,11 +72,28 @@ export const useArtists = (): UseArtistsReturnType => {
     search: "",
   };
 
-  return {
-    artists,
-    loading,
-    filters,
-    handleCountryFilter,
-    handlePin,
-  };
+  return (
+    <ArtistsContext.Provider
+      value={{
+        selectedLetter,
+        setSelectedLetter,
+        loading,
+        artists,
+        filters,
+        handlePin,
+        handleCountryFilter,
+      }}
+    >
+      {children}
+    </ArtistsContext.Provider>
+  );
+};
+
+export const useArtists = () => {
+  const context = useContext(ArtistsContext);
+  if (!context) {
+    throw new Error("useArtists must be used within a NavigationProvider");
+  }
+
+  return context;
 };

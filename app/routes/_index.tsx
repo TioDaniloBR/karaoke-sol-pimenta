@@ -4,7 +4,8 @@ import { ArtistList } from "~/components/ArtistList";
 import { ResultList } from "~/components/ResultsList";
 import SearchIcon from "../images/search.png";
 import { Container } from "~/components/Container";
-import { useNavigationController } from "~/contexts/NavigationProvider";
+import { useArtists } from "~/contexts/ArtistsProvider";
+import { useSongSearch } from "~/contexts/SongSearchProvider";
 import { cn } from "~/utils";
 
 export const meta: MetaFunction = () => {
@@ -29,17 +30,20 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const {
-    handleSearch,
-    searchLoading,
-    search,
-    results,
     loading,
     artists,
     filters,
     handleCountryFilter,
     selectedLetter,
     setSelectedLetter,
-  } = useNavigationController();
+  } = useArtists();
+
+  const {
+    search,
+    results,
+    loading: searchLoading,
+    handleSearch,
+  } = useSongSearch();
 
   const letters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 

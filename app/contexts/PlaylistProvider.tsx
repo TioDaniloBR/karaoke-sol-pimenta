@@ -1,14 +1,18 @@
-import { useLayoutEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useState } from "react";
 import { db } from "~/indexedDb/db";
 import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 
-export type UsePlaylistReturnType = {
+type UsePlaylistReturnType = {
   playlist: SearchResult | null;
   pin: (result: ArtistResult | SongResult) => void;
   unpin: (result: ArtistResult | SongResult) => void;
 };
 
-export const usePlaylist = (): UsePlaylistReturnType => {
+const PlaylistContext = createContext<UsePlaylistReturnType | null>(null);
+
+type Props = {} & React.ComponentProps<"div">;
+
+export const PlaylistProvider = ({ children }: Props) => {
   const [playlist, setPlaylist] = useState<SearchResult | null>(null);
 
   useLayoutEffect(() => {
@@ -61,9 +65,24 @@ export const usePlaylist = (): UsePlaylistReturnType => {
     setPlaylist(newPlaylist);
   };
 
-  return {
-    playlist,
-    pin,
-    unpin,
-  };
+  return (
+    <PlaylistContext.Provider
+      value={{
+        pin,
+        unpin,
+        playlist,
+      }}
+    >
+      {children}
+    </PlaylistContext.Provider>
+  );
+};
+
+export const usePlaylist = () => {
+  const context = useContext(PlaylistContext);
+  if (!context) {
+    throw new Error("usePlaylist must be used within a NavigationProvider");
+  }
+
+  return context;
 };

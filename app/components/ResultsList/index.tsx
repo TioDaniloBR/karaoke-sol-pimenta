@@ -1,9 +1,10 @@
 import { SearchResult } from "~/models/SearchResult";
 import { ArtistTile } from "../ArtistTile";
 import { ResultSongTile } from "../ResultSongTile";
-import { Link, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { SectionTitle } from "../SectionTitle";
+import { useSongSearch } from "~/contexts/SongSearchProvider";
 
 type Props = {
   loading: boolean;
@@ -12,6 +13,7 @@ type Props = {
 
 export const ResultList = ({ results, loading }: Props) => {
   const navigate = useNavigate();
+  const { handlePinSong, handlePinArtist } = useSongSearch();
 
   if (loading || !results) {
     return <div>Carregando...</div>;
@@ -32,6 +34,7 @@ export const ResultList = ({ results, loading }: Props) => {
                 <ArtistTile
                   artist={result}
                   onTileClick={() => navigate(`/artist/${result.name}`)}
+                  onPinClick={() => handlePinArtist(result)}
                 />
               </li>
             ))}

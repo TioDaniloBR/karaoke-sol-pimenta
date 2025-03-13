@@ -2,7 +2,7 @@ import { Artist } from "~/models/Artist";
 import { ArtistTile } from "../ArtistTile";
 import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
-import { useNavigationController } from "~/contexts/NavigationProvider";
+import { useArtists } from "~/contexts/ArtistsProvider";
 
 type Props = {
   loading: boolean;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const ArtistList = ({ loading, artists }: Props) => {
-  const { selectedLetter, handlePin } = useNavigationController();
+  const { selectedLetter, handlePin } = useArtists();
   const navigate = useNavigate();
 
   if (loading) {
