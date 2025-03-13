@@ -1,5 +1,5 @@
 import { Artist } from "../../models/Artist";
-import albumNotFound from "../../images/album-not-found.svg";
+import notFound from "~/images/not-found.png";
 import { cn } from "~/utils";
 import heartFilledIcon from "~/images/heart-filled.png";
 import heartBlankIcon from "~/images/heart-blank.svg";
@@ -48,8 +48,11 @@ export const ArtistTile = ({
         onClick={handleTileClick}
       >
         <img
-          className={cn("rounded-full object-cover", imageVariants[variant])}
-          src={artist.image_url || albumNotFound}
+          className={cn(
+            "rounded-full object-cover bg-white",
+            imageVariants[variant]
+          )}
+          src={artist.image_url || notFound}
           alt={artist.name}
         />
         <h2 className={cn("", textVariants[variant])}>{artist.name}</h2>
