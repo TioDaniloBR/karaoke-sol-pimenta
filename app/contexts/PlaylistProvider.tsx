@@ -1,4 +1,4 @@
-import { createContext, useContext, useLayoutEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "~/indexedDb/db";
 import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 
@@ -14,13 +14,12 @@ type Props = {} & React.ComponentProps<"div">;
 
 export const PlaylistProvider = ({ children }: Props) => {
   const [playlist, setPlaylist] = useState<SearchResult | null>(null);
+  const fetchPlaylist = async () => {
+    const playlist = await db.getPinnedResults();
+    setPlaylist(playlist);
+  };
 
-  useLayoutEffect(() => {
-    const fetchPlaylist = async () => {
-      const playlist = await db.getPinnedResults();
-      setPlaylist(playlist);
-    };
-
+  useEffect(() => {
     fetchPlaylist();
   }, []);
 

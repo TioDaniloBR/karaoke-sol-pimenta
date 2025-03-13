@@ -4,11 +4,10 @@ import { ArtistTile } from "~/components/ArtistTile";
 import { db } from "~/indexedDb/db";
 import { useEffect, useState, Suspense } from "react";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
-import backIcon from "~/images/back.png";
 import { Container } from "~/components/Container";
+import { Header } from "~/components/Header";
 
 export default function ArtistPage() {
-  const navigate = useNavigate();
   const { artistId } = useParams();
   const [artist, setArtist] = useState<ArtistWithSongs | null>(null);
 
@@ -22,16 +21,10 @@ export default function ArtistPage() {
 
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <main className="mx-auto p-6 max-w-3xl mb-26">
+      <Header />
+      <main className="mx-auto p-6 max-w-3xl">
         <section className="flex justify-between mb-8 items-center">
           <ArtistTile artist={artist} variant="medium" />
-          <button onClick={() => navigate(-1)}>
-            <img
-              src={backIcon}
-              alt="Voltar para a página anterior"
-              className="w-20"
-            />
-          </button>
         </section>
         <Container className="shadow-blurred">
           <ul className="grid gap-4">

@@ -7,6 +7,11 @@ import { Container } from "~/components/Container";
 import { useArtists } from "~/contexts/ArtistsProvider";
 import { useSongSearch } from "~/contexts/SongSearchProvider";
 import { cn } from "~/utils";
+import { Header } from "~/components/Header";
+import { Link } from "@remix-run/react";
+import logo from "~/images/logo.png";
+import playlistIcon from "~/images/favorite.png";
+import shareIcon from "~/images/share.png";
 
 export const meta: MetaFunction = () => {
   return [
@@ -48,57 +53,75 @@ export default function Index() {
   const letters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <main className="mx-auto max-w-xl p-4 mb-26">
-      <div className="sticky top-0 bg-body">
-        <Container className="px-6 py-4 mb-4 border-secondary">
-          <div className="flex justify-between mb-6">
-            <Checkbox
-              label="Nacionais"
-              checked={filters.national}
-              onCheckedChange={handleCountryFilter("Nacional")}
-              className="col-start-1"
+    <>
+      <header className="bg-body py-5 px-4 flex justify-center">
+        <div>
+          <img className="w-36" src={logo} alt="Sol e Pimenta Lounge Bar" />
+        </div>
+        <div className="flex gap-4 absolute right-3">
+          <Link to="/playlist" className="inline-block bg-white rounded-full">
+            <img className="w-8" src={playlistIcon} alt="Sua playlist" />
+          </Link>
+          <button className="h-8 w-8">
+            <img
+              src={shareIcon}
+              alt="Clique para compartilhar nossa aplicação"
             />
-            <Checkbox
-              label="Internacionais"
-              checked={filters.international}
-              onCheckedChange={handleCountryFilter("Internacional")}
-              className="col-start-2"
-            />
-          </div>
-          <div className="relative">
-            <input
-              name="filter"
-              id="filter"
-              className="w-full border-secondary border rounded-3xl px-4 h-8 placeholder-white"
-              onChange={handleSearch}
-              placeholder="Procure por músicas ou artistas"
-              value={search}
-            />
-            <button className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
-              <img src={SearchIcon} alt="Limpar busca" />
-            </button>
-          </div>
-        </Container>
-        {!search && (
-          <ul className="flex gap-3 mb-5 overflow-x-auto p-4 scrollbar">
-            {letters.map((letter) => (
-              <li key={letter}>
-                <button
-                  className={cn(letter === selectedLetter && "text-red-500")}
-                  onClick={() => setSelectedLetter(letter)}
-                >
-                  {letter}
-                </button>
-              </li>
-            ))}
-          </ul>
+          </button>
+        </div>
+      </header>
+      <main className="mx-auto max-w-xl p-4 mb-26">
+        <div className="sticky top-0 bg-body">
+          <Container className="px-6 py-4 mb-4 border-secondary">
+            <div className="flex justify-between mb-6">
+              <Checkbox
+                label="Nacionais"
+                checked={filters.national}
+                onCheckedChange={handleCountryFilter("Nacional")}
+                className="col-start-1"
+              />
+              <Checkbox
+                label="Internacionais"
+                checked={filters.international}
+                onCheckedChange={handleCountryFilter("Internacional")}
+                className="col-start-2"
+              />
+            </div>
+            <div className="relative">
+              <input
+                name="filter"
+                id="filter"
+                className="w-full border-secondary border rounded-3xl px-4 h-8 placeholder-white"
+                onChange={handleSearch}
+                placeholder="Procure por músicas ou artistas"
+                value={search}
+              />
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                <img src={SearchIcon} alt="Limpar busca" />
+              </button>
+            </div>
+          </Container>
+          {!search && (
+            <ul className="flex gap-3 mb-5 overflow-x-auto p-4 scrollbar">
+              {letters.map((letter) => (
+                <li key={letter}>
+                  <button
+                    className={cn(letter === selectedLetter && "text-red-500")}
+                    onClick={() => setSelectedLetter(letter)}
+                  >
+                    {letter}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        {search ? (
+          <ResultList loading={searchLoading} results={results} />
+        ) : (
+          <ArtistList loading={loading} artists={artists} />
         )}
-      </div>
-      {search ? (
-        <ResultList loading={searchLoading} results={results} />
-      ) : (
-        <ArtistList loading={loading} artists={artists} />
-      )}
-    </main>
+      </main>
+    </>
   );
 }

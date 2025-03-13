@@ -20,8 +20,8 @@ export const ArtistTile = ({
   variant = "small",
 }: Props) => {
   const imageVariants = {
-    small: "w-16 h-16",
-    medium: "w-28 h-28",
+    small: "w-12 h-12",
+    medium: "w-16 h-16",
   };
   const textVariants = {
     small: "text-sm",
@@ -42,7 +42,7 @@ export const ArtistTile = ({
   };
 
   return (
-    <div key={artist.name} className="flex justify-between">
+    <div key={artist.name} className="flex justify-between w-">
       <div className={cn("flex gap-6 items-center")} onClick={handleTileClick}>
         <img
           className={cn("rounded-full object-cover", imageVariants[variant])}

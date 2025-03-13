@@ -33,7 +33,7 @@ export const ResultList = ({ results, loading }: Props) => {
               <li>
                 <ArtistTile
                   artist={result}
-                  onTileClick={() => navigate(`/artist/${result.name}`)}
+                  onTileClick={() => navigate(`/artist/${result.id}`)}
                   onPinClick={() => handlePinArtist(result)}
                 />
               </li>

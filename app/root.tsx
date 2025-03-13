@@ -11,7 +11,6 @@ import "./tailwind.css";
 import { SongSearchProvider } from "./contexts/SongSearchProvider";
 import { ArtistsProvider } from "./contexts/ArtistsProvider";
 import { PlaylistProvider } from "./contexts/PlaylistProvider";
-import { Header } from "./components/Header";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -36,7 +35,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header />
         {children}
         <ScrollRestoration />
         <Scripts />
