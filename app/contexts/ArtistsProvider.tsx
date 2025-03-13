@@ -18,6 +18,7 @@ type UseArtistsReturnType = {
     countryName: Country
   ) => (checked: CheckedState) => void;
   handlePin: (artist: Artist) => void;
+  fetchArtists: () => void;
 };
 
 const ArtistsContext = createContext<UseArtistsReturnType | null>(null);
@@ -30,11 +31,16 @@ export const ArtistsProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());
 
-  useEffect(() => {
+  const fetchArtists = () => {
+    setLoading(true);
     db.fetchAndStoreData()
       .then(() => db.getArtists())
       .then(setArtists)
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchArtists();
   }, []);
 
   const handleCountryFilter = (countryName: Country) => {
@@ -76,6 +82,7 @@ export const ArtistsProvider = ({ children }: Props) => {
         filters,
         handlePin,
         handleCountryFilter,
+        fetchArtists,
       }}
     >
       {children}

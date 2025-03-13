@@ -62,7 +62,6 @@ class DB {
 
   getArtist = async (artistId: string): Promise<ArtistWithSongs | null> => {
     const artist = await this.#db.artists.get(artistId);
-    console.log("artist", artistId);
     if (!artist) {
       return null;
     }
