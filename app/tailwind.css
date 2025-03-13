@@ -7,8 +7,11 @@
   --color-primary: #ffff15;
   --color-secondary: #13d3d6;
   --color-body: rgb(3 7 18 / var(--tw-bg-opacity, 1));
-  --color-white: hsla(0, 0%, 90%, 1)
+  --color-white: hsla(0, 0%, 90%, 1);
   --color-red-500: hsla(0, 100%, 50%, 0.7);
+  --color-badge-bg: hsla(224, 50%, 14%, 1);
+  --color-badge-border: hsla(181, 84%, 46%, 0.5);
+  --color-badge-text: hsla(181, 61%, 74%, 1);
 
   --shadow-blurred: 0px 4px 4px 0px rgba(255, 255, 21, 0.5);
 }

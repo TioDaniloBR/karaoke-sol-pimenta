@@ -21,19 +21,21 @@ export default function ArtistPage() {
 
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <Header />
-      <main className="mx-auto p-6 max-w-3xl">
-        <section className="flex justify-between mb-8 items-center">
-          <ArtistTile artist={artist} variant="medium" />
-        </section>
-        <Container className="shadow-blurred">
-          <ul className="grid gap-4">
-            {artist.songs.map((song) => (
-              <SongTile key={song.code} song={song} />
-            ))}
-          </ul>
-        </Container>
-      </main>
+      <div className="px-5 pt-2">
+        <Header />
+        <main className="mx-auto p-6 max-w-3xl">
+          <section className="flex justify-between mb-8 items-center">
+            <ArtistTile artist={artist} variant="medium" />
+          </section>
+          <Container className="shadow-blurred">
+            <ul className="grid gap-4">
+              {artist.songs.map((song) => (
+                <SongTile key={song.code} song={song} />
+              ))}
+            </ul>
+          </Container>
+        </main>
+      </div>
     </Suspense>
   );
 }
