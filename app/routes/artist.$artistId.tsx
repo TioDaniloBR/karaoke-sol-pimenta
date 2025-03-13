@@ -31,7 +31,7 @@ export default function ArtistPage() {
     <Suspense fallback={<div>Carregando...</div>}>
       <div className="px-5 pt-2">
         <Header />
-        <main className="mx-auto p-6 max-w-3xl">
+        <main className="mx-auto max-w-md">
           <section className="flex justify-between mb-8 items-center">
             <ArtistTile artist={artist} variant="medium" />
           </section>
