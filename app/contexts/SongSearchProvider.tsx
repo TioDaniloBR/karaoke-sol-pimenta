@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDebounce } from "~/hooks/useDebounce";
 import { db } from "~/indexedDb/db";
-import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
+import { Artist } from "~/models/Artist";
+import { SearchResult } from "~/models/SearchResult";
+import { Song } from "~/models/Song";
 
 type UseSongSearchReturnType = {
   results: SearchResult | null;
@@ -9,7 +11,8 @@ type UseSongSearchReturnType = {
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   loading: boolean;
   resetSearch: () => void;
-  handlePin: (result: ArtistResult | SongResult) => void;
+  handleArtistPin: (artist: Artist) => void;
+  handleSongPin: (song: Song) => void;
 };
 
 const SongSearchContext = createContext<UseSongSearchReturnType | null>(null);
@@ -41,16 +44,16 @@ export const SongSearchProvider = ({ children }: Props) => {
     setResults(null);
   };
 
-  const handlePin = async (result: ArtistResult | SongResult) => {
+  const handleArtistPin = async (artist: Artist) => {
     if (!results) return;
 
-    if (result.kind === "artist") {
-      await db.togglePinArtist(result);
-    }
+    await db.togglePinArtist(artist);
+    setResults({ ...results });
+  };
 
-    if (result.kind === "song") {
-      await db.togglePinSong(result);
-    }
+  const handleSongPin = async (song: Song) => {
+    if (!results) return;
+    await db.togglePinSong(song);
 
     setResults({ ...results });
   };
@@ -63,7 +66,8 @@ export const SongSearchProvider = ({ children }: Props) => {
         search,
         results,
         resetSearch,
-        handlePin,
+        handleSongPin,
+        handleArtistPin,
       }}
     >
       {children}

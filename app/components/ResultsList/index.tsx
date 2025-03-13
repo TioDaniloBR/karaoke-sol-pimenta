@@ -4,14 +4,22 @@ import { SongTile } from "../SongTile";
 import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { SectionTitle } from "../SectionTitle";
+import { Artist } from "~/models/Artist";
+import { Song } from "~/models/Song";
 
 type Props = {
   loading: boolean;
   results: SearchResult | null;
-  onPin: (result: ArtistResult | SongResult) => void;
+  onArtistPin: (artist: Artist) => void;
+  onSongPin: (song: Song) => void;
 };
 
-export const ResultList = ({ results, loading, onPin }: Props) => {
+export const ResultList = ({
+  results,
+  loading,
+  onArtistPin,
+  onSongPin,
+}: Props) => {
   const navigate = useNavigate();
 
   if (loading || !results) {
@@ -33,7 +41,7 @@ export const ResultList = ({ results, loading, onPin }: Props) => {
                 <ArtistTile
                   artist={result}
                   onTileClick={() => navigate(`/artist/${result.id}`)}
-                  onPinClick={() => onPin(result)}
+                  onPinClick={() => onArtistPin(result)}
                 />
               </li>
             ))}
@@ -45,7 +53,7 @@ export const ResultList = ({ results, loading, onPin }: Props) => {
                 key={result.id}
                 song={result}
                 variant="result"
-                onPin={onPin}
+                onPin={() => onSongPin(result)}
               />
             ))}
           </ul>

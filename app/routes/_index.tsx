@@ -7,7 +7,6 @@ import { Container } from "~/components/Container";
 import { useArtists } from "~/contexts/ArtistsProvider";
 import { useSongSearch } from "~/contexts/SongSearchProvider";
 import { cn } from "~/utils";
-import { Header } from "~/components/Header";
 import { Link } from "@remix-run/react";
 import logo from "~/images/logo.png";
 import playlistIcon from "~/images/favorite.png";
@@ -43,7 +42,7 @@ export default function Index() {
     setSelectedLetter,
   } = useArtists();
 
-  const { handlePin } = useSongSearch();
+  const { handleArtistPin, handleSongPin } = useSongSearch();
 
   const {
     search,
@@ -122,7 +121,8 @@ export default function Index() {
           <ResultList
             loading={searchLoading}
             results={results}
-            onPin={handlePin}
+            onSongPin={handleSongPin}
+            onArtistPin={handleArtistPin}
           />
         ) : (
           <ArtistList loading={loading} artists={artists} />
