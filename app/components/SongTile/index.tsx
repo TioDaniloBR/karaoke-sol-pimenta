@@ -23,8 +23,8 @@ export function SongTile({ song, onPin, variant }: Props) {
       <div className="flex gap-3 items-center">
         <CodeBadge>{song.code}</CodeBadge>
         <div>
-          <h2 className="text-xl">{song.title}</h2>
-          <p className="text-ellipsis">{description}</p>
+          <h2 className="">{song.title}</h2>
+          <p className="text-ellipsis text-sm">{description}</p>
         </div>
       </div>
       <button onClick={() => onPin(song)}>

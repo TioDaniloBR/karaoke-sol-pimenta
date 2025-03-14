@@ -25,7 +25,7 @@ export const ArtistTile = ({
   };
   const textVariants = {
     small: "text-sm",
-    medium: "text-2xl",
+    medium: "text-xl",
   };
 
   const heartIcon = artist.pinned ? heartFilledIcon : heartBlankIcon;

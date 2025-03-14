@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: Saira Extra Condensed, ui-sans-serif, system-ui, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 
   --color-primary: #ffff15;
   --color-secondary: #13d3d6;
