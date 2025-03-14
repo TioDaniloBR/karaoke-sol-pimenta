@@ -16,6 +16,7 @@ const ApiArtistSchemaCollection = z.array(ApiArtistSchema);
 
 const ApiSongSchema = z.array(
   z.object({
+    id: z.string(),
     code: z.string(),
     title: z.string(),
     artistName: z.string(),

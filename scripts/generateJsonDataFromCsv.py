@@ -47,6 +47,7 @@ with open(csv_file, mode='r', newline='', encoding='utf-8') as file:
         song_data = dict(row)
         song_data["artist"] = artist.to_dict()  # Store artist as a dictionary
         song_data["artistId"] = artist.id
+        song_data["id"] = str(uuid.uuid4())
 
         songs.append(song_data)
     

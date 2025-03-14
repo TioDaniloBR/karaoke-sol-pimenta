@@ -3,7 +3,6 @@ import { Artist } from "~/models/Artist";
 import { Country } from "~/models/Country";
 import { ArtistResult, SearchResult, SongResult } from "~/models/SearchResult";
 import { Song } from "~/models/Song";
-import { v4 as uuid } from "uuid";
 import { ArtistWithSongs } from "~/models/ArtistWithSongs";
 
 export type DBSong = Song & {
@@ -12,17 +11,17 @@ export type DBSong = Song & {
 
 class DB {
   #db: Dexie & {
-    songs: EntityTable<DBSong, "code">;
+    songs: EntityTable<DBSong, "id">;
     artists: EntityTable<Artist, "id">;
   };
 
   constructor() {
     this.#db = new Dexie("karaokeDB") as Dexie & {
-      songs: EntityTable<DBSong, "code">;
+      songs: EntityTable<DBSong, "id">;
       artists: EntityTable<Artist, "id">;
     };
     this.#db.version(1).stores({
-      songs: "code, artistId, title, country",
+      songs: "id, artistId, title, country",
       artists: "id, name, country, pinned",
     });
   }
@@ -108,7 +107,6 @@ class DB {
 
     const songResults: SongResult[] = songs.map((song) => ({
       ...song,
-      id: uuid(),
       kind: "song",
     }));
 
@@ -139,7 +137,7 @@ class DB {
 
     return {
       artistsResult: artists.map((artist) => ({ ...artist, kind: "artist" })),
-      songsResult: songs.map((song) => ({ ...song, kind: "song", id: uuid() })),
+      songsResult: songs.map((song) => ({ ...song, kind: "song" })),
     };
   };
 }
