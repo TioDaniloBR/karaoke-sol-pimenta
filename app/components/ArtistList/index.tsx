@@ -11,22 +11,22 @@ type Props = {
 };
 
 export const ArtistList = ({ loading, artists }: Props) => {
-  const { selectedLetter, position, handlePin, setPosition } = useArtists();
+  const { selectedLetter, scrollPosition, handlePin, setScrollPosition } = useArtists();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (position && artists.length > 0) {
-        window.scrollTo(0, position);
+      if (scrollPosition && artists.length > 0) {
+        window.scrollTo(0, scrollPosition);
       }
     }
-  }, [position, artists]);
+  }, [scrollPosition, artists]);
 
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
     if (typeof window !== "undefined") {
       const scrollPosition = window.scrollY;
-      setPosition(scrollPosition)
+      setScrollPosition(scrollPosition)
     }
     navigate(path);
   };

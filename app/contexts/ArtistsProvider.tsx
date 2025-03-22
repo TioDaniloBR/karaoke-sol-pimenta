@@ -19,8 +19,8 @@ type UseArtistsReturnType = {
   ) => (checked: CheckedState) => void;
   handlePin: (artist: Artist) => void;
   fetchArtists: () => void;
-  position: number;
-  setPosition: (position: number) => void;
+  scrollPosition: number;
+  setScrollPosition: (scrollPosition: number) => void;
 };
 
 const ArtistsContext = createContext<UseArtistsReturnType | null>(null);
@@ -32,7 +32,7 @@ export const ArtistsProvider = ({ children }: Props) => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(new Set<Country>());
-  const [position, setPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const fetchArtists = () => {
     setLoading(true);
@@ -86,8 +86,8 @@ export const ArtistsProvider = ({ children }: Props) => {
         handlePin,
         handleCountryFilter,
         fetchArtists,
-        position,
-        setPosition,
+        scrollPosition,
+        setScrollPosition,
       }}
     >
       {children}
