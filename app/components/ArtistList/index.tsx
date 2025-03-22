@@ -3,6 +3,7 @@ import { ArtistTile } from "../ArtistTile";
 import { useNavigate } from "@remix-run/react";
 import { Container } from "../Container";
 import { useArtists } from "~/contexts/ArtistsProvider";
+import { useEffect } from "react";
 
 type Props = {
   loading: boolean;
@@ -10,8 +11,25 @@ type Props = {
 };
 
 export const ArtistList = ({ loading, artists }: Props) => {
-  const { selectedLetter, handlePin } = useArtists();
+  const { selectedLetter, position, handlePin, setPosition } = useArtists();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (position && artists.length > 0) {
+        window.scrollTo(0, position);
+      }
+    }
+  }, [position, artists]);
+
   const navigate = useNavigate();
+
+  const handleNavigation = (path: string) => {
+    if (typeof window !== "undefined") {
+      const scrollPosition = window.scrollY;
+      setPosition(scrollPosition)
+    }
+    navigate(path);
+  };
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -32,7 +50,7 @@ export const ArtistList = ({ loading, artists }: Props) => {
             <li key={artist.id}>
               <ArtistTile
                 artist={artist}
-                onTileClick={() => navigate(`/artist/${artist.id}`)}
+                onTileClick={() => handleNavigation(`/artist/${artist.id}`)}
                 onPinClick={handlePin}
               />
             </li>
